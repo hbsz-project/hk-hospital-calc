@@ -15,6 +15,7 @@ const baseInput: CalculatorInput = {
   epidural: false,
   instrumentalDelivery: false,
   babyScreeningFee: 0,
+  professionalSurchargePercent: 50,
   professionalQuote: {}
 };
 
@@ -120,13 +121,13 @@ describe("maternity cost calculator", () => {
     expect(result.breakdown.find((item) => item.id === "baby-extra-screening")?.base).toBe(2500);
   });
 
-  it("adds 50% to both obstetrician and anaesthetist fees for Union standard-room off-hours", () => {
+  it("defaults to a 50% obstetrician and anaesthetist surcharge for off-hours", () => {
     const result = calculateEstimate({
       ...baseInput,
       timing: "off_hours"
     });
     const surcharge = result.breakdown.find(
-      (item) => item.id === "professional-uh-standard-off-hours"
+      (item) => item.id === "professional-off-hours-surcharge"
     );
 
     expect(surcharge?.base).toBe(20000);
@@ -134,15 +135,32 @@ describe("maternity cost calculator", () => {
     expect(result.base).toBe(127900);
   });
 
-  it("does not apply the Union standard-room professional surcharge to private rooms", () => {
+  it("lets the user change the professional off-hours surcharge percentage", () => {
     const result = calculateEstimate({
       ...baseInput,
-      room: "私家房",
+      timing: "off_hours",
+      professionalSurchargePercent: 25
+    });
+    const surcharge = result.breakdown.find(
+      (item) => item.id === "professional-off-hours-surcharge"
+    );
+
+    expect(surcharge?.base).toBe(10000);
+    expect(result.professionalSubtotal.base).toBe(55000);
+  });
+
+  it("does not add a professional off-hours surcharge to Matilda Total Care", () => {
+    const result = calculateEstimate({
+      ...baseInput,
+      hospitalId: "MIH",
+      room: "Standard Room",
+      packageMode: "total_care",
       timing: "off_hours"
     });
 
+    expect(result.selectedPackage?.professionalIncluded).toBe(true);
     expect(
-      result.breakdown.some((item) => item.id === "professional-uh-standard-off-hours")
+      result.breakdown.some((item) => item.id === "professional-off-hours-surcharge")
     ).toBe(false);
   });
 });

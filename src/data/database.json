@@ -86,8 +86,8 @@
       "version": "2026 current official",
       "completeness": 94,
       "confidence": "high",
-      "lastVerified": "2026-07-10",
-      "notes": "官方頁已確認Hospital Package不包醫生費、Total Care包指定醫生費；兩類套餐可分開計算。"
+      "lastVerified": "2026-07-11",
+      "notes": "官方產科頁已確認Hospital Package不包醫生費；Maternity Total Care包指定醫生費，只限指定醫生並須至少兩次明德產檢。"
     },
     {
       "id": "CH",
@@ -3029,9 +3029,9 @@
       "name": "Hospital Packages－Maternity",
       "url": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "effective": "官方現行網頁",
-      "checked": "2026-07-10",
+      "checked": "2026-07-11",
       "reliability": "官方",
-      "limitation": "頁面同時提供Hospital與Total Care兩類，當前產科價目所屬類別需院方確認"
+      "limitation": "Maternity Total Care只限指定醫生，並要求至少兩次明德產檢；使用前須向院方確認資格"
     },
     {
       "id": "SRC-H-011",

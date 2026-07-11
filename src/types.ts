@@ -156,6 +156,7 @@ export interface CalculatorInput {
   epidural: boolean;
   instrumentalDelivery: boolean;
   babyScreeningFee: number;
+  professionalSurchargePercent: number;
   professionalQuote: ProfessionalQuote;
 }
 

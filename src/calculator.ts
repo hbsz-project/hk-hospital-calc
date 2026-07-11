@@ -248,28 +248,31 @@ function getProfessional(input: CalculatorInput, selected: MaternityPackage) {
     };
   });
 
-  const unionStandardOffHours =
-    input.hospitalId === "UH" &&
-    input.room === "標準房" &&
-    input.delivery !== "natural" &&
-    input.timing === "off_hours";
+  const professionalOffHoursSurcharge =
+    input.timing === "off_hours" && input.professionalSurchargePercent > 0;
 
-  if (unionStandardOffHours) {
+  if (professionalOffHoursSurcharge) {
     const obstetrician = allItems.find((item) => item.id === "professional-obstetrician");
     const anaesthetist = allItems.find((item) => item.id === "professional-anaesthetist");
-    if (obstetrician && anaesthetist) {
+    const eligibleItems = [obstetrician, anaesthetist].filter(
+      (item): item is BreakdownItem => item !== undefined
+    );
+    if (eligibleItems.length) {
+      const rate = input.professionalSurchargePercent / 100;
       const surcharge = {
-        low: obstetrician.low * 0.5 + anaesthetist.low * 0.5,
-        base: obstetrician.base * 0.5 + anaesthetist.base * 0.5,
-        high: obstetrician.high * 0.5 + anaesthetist.high * 0.5
+        low: eligibleItems.reduce((sum, item) => sum + item.low * rate, 0),
+        base: eligibleItems.reduce((sum, item) => sum + item.base * rate, 0),
+        high: eligibleItems.reduce((sum, item) => sum + item.high * rate, 0)
       };
       allItems.push({
-        id: "professional-uh-standard-off-hours",
-        label: "仁安夜間／假日專業費附加",
-        detail: "標準房：產科醫生手術費及麻醉師費各加 50%",
+        id: "professional-off-hours-surcharge",
+        label: "夜間／假日專業費附加",
+        detail: `產科醫生${input.delivery === "natural" ? "接生" : "手術"}費${
+          anaesthetist ? "及麻醉師費" : ""
+        }加 ${input.professionalSurchargePercent}%`,
         ...surcharge,
         kind: "professional",
-        source: "estimate"
+        source: "user"
       });
     }
   }
@@ -658,13 +661,12 @@ export function calculateEstimate(input: CalculatorInput): CalculatorResult {
     );
   }
   if (
-    input.hospitalId === "UH" &&
-    input.room === "標準房" &&
-    input.delivery !== "natural" &&
-    input.timing === "off_hours"
+    input.timing === "off_hours" &&
+    !selected.professionalIncluded &&
+    input.professionalSurchargePercent > 0
   ) {
     warnings.push(
-      "仁安標準房夜間／假日專業費按一宗實際經驗計算：產科醫生手術費及麻醉師費各加50%。"
+      `夜間／假日專業費暫按${input.professionalSurchargePercent}%計算；這是可修改假設，並非院方統一醫生收費。`
     );
   }
   if (input.delivery === "natural") {

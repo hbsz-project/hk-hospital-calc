@@ -131,6 +131,37 @@ function CurrencyInput({
   );
 }
 
+function PercentageInput({
+  value,
+  onChange
+}: {
+  value: number;
+  onChange: (value: number) => void;
+}) {
+  return (
+    <label className="percentage-field">
+      <span>醫生及麻醉師假日附加</span>
+      <div>
+        <input
+          aria-label="專業費假日附加百分比"
+          inputMode="decimal"
+          min="0"
+          max="300"
+          step="5"
+          type="number"
+          value={value}
+          onChange={(event) => {
+            const next = Number(event.target.value);
+            onChange(Number.isFinite(next) ? Math.min(300, Math.max(0, next)) : 0);
+          }}
+        />
+        <b>%</b>
+      </div>
+      <small>預設50%；套用於產科醫生接生／手術費及麻醉師費，可按診所報價修改。</small>
+    </label>
+  );
+}
+
 function App() {
   const [input, setInput] = useState<CalculatorInput>({
     hospitalId: "UH",
@@ -145,6 +176,7 @@ function App() {
     epidural: false,
     instrumentalDelivery: false,
     babyScreeningFee: 0,
+    professionalSurchargePercent: 50,
     professionalQuote: {}
   });
 
@@ -306,6 +338,9 @@ function App() {
                   <small>指定專業費已包</small>
                 </button>
               </div>
+              <p className="package-mode-note">
+                Total Care只適用於指定醫生，並須完成至少兩次明德產檢；不符合資格請選Hospital Package。
+              </p>
             </fieldset>
           )}
 
@@ -366,16 +401,19 @@ function App() {
             </div>
           </fieldset>
 
-          {input.hospitalId === "UH" &&
-            input.room === "標準房" &&
-            input.delivery !== "natural" &&
-            input.timing === "off_hours" && (
-              <div className="timing-rule-note">
-                <Info size={16} />
-                <span>
-                  仁安標準房實際經驗：夜間／假日的產科醫生手術費及麻醉師費各加
-                  <strong> 50%</strong>。
-                </span>
+          {input.timing === "off_hours" &&
+            !result.selectedPackage?.professionalIncluded && (
+              <div className="professional-surcharge-control">
+                <PercentageInput
+                  value={input.professionalSurchargePercent}
+                  onChange={(value) => update("professionalSurchargePercent", value)}
+                />
+                <div className="timing-rule-note">
+                  <Info size={16} />
+                  <span>
+                    院方夜間／假日附加費會按醫院官方資料另行加入，不包括在這個百分比內。
+                  </span>
+                </div>
               </div>
             )}
 
