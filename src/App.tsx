@@ -60,8 +60,8 @@ const sourceLabels = {
   secondary: "二級來源"
 };
 
-const feedbackSheetUrl =
-  "https://docs.google.com/spreadsheets/d/1gbyg6dAUWaZkDDaVLYtmmLZA8j4aakwZjWeGEeCPSjU/edit";
+const feedbackFormUrl =
+  "https://docs.google.com/forms/d/e/1FAIpQLScOSiFTAuzY3X-hzD5XS1KIQ7vVpMix2VUD1qCorwqodHgZ5Q/viewform?usp=publish-editor";
 
 function Stepper({
   value,
@@ -762,10 +762,10 @@ function App() {
                 <span>幫助提高準確度</span>
               </div>
               <p>
-                我們正在整理匿名回饋表格，用戶日後可分享已遮名帳單或實際收費作人工審核。提交前請先遮去姓名、身份證、病人編號、地址、電話及付款資料。
+                如果你願意分享已遮名帳單或實際收費，可提交匿名資料作人工審核。提交前請先遮去姓名、身份證、病人編號、地址、電話及付款資料。
               </p>
-              <a href={feedbackSheetUrl} target="_blank" rel="noreferrer">
-                查看貢獻欄位
+              <a href={feedbackFormUrl} target="_blank" rel="noreferrer">
+                提交實際收費資料
                 <ExternalLink size={13} />
               </a>
             </section>
