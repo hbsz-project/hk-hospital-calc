@@ -60,6 +60,9 @@ const sourceLabels = {
   secondary: "二級來源"
 };
 
+const feedbackSheetUrl =
+  "https://docs.google.com/spreadsheets/d/1gbyg6dAUWaZkDDaVLYtmmLZA8j4aakwZjWeGEeCPSjU/edit";
+
 function Stepper({
   value,
   min,
@@ -752,6 +755,20 @@ function App() {
               <Info size={16} />
               <p>{database.release.disclaimer} 最終收費以院方及醫療團隊結算為準。</p>
             </div>
+
+            <section className="feedback-section">
+              <div>
+                <FileCheck2 size={18} />
+                <span>幫助提高準確度</span>
+              </div>
+              <p>
+                我們正在整理匿名回饋表格，用戶日後可分享已遮名帳單或實際收費作人工審核。提交前請先遮去姓名、身份證、病人編號、地址、電話及付款資料。
+              </p>
+              <a href={feedbackSheetUrl} target="_blank" rel="noreferrer">
+                查看貢獻欄位
+                <ExternalLink size={13} />
+              </a>
+            </section>
           </div>
         </aside>
       </main>
