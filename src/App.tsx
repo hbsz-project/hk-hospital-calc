@@ -24,6 +24,7 @@ import type {
   CalculatorInput,
   DeliveryScenario,
   PackageMode,
+  BreakdownItem,
   ProfessionalQuote,
   TimingScenario
 } from "./types";
@@ -183,6 +184,46 @@ function App() {
   const rooms = useMemo(() => getRooms(input.hospitalId), [input.hospitalId]);
   const result = useMemo(() => calculateEstimate(input), [input]);
   const hospital = hospitals.find((item) => item.id === input.hospitalId);
+  const breakdownGroups = useMemo(() => {
+    const byKind = (kind: BreakdownItem["kind"]) =>
+      result.breakdown.filter((item) => item.kind === kind);
+    const hospitalItems = result.breakdown.filter(
+      (item) => item.kind === "hospital" || item.kind === "reserve"
+    );
+    const professionalItems = byKind("professional");
+    const babyItems = byKind("baby");
+
+    return [
+      {
+        id: "hospital",
+        title: "院方收費",
+        description: "分娩套餐、房租及院方附加",
+        icon: <Building2 size={16} />,
+        items: hospitalItems,
+        subtotal: result.hospitalSubtotal.base,
+        emptyText: "暫未加入院方項目"
+      },
+      {
+        id: "professional",
+        title: "媽媽專業費",
+        description: "產科醫生、麻醉師、巡房及專業費附加",
+        icon: <Stethoscope size={16} />,
+        items: professionalItems,
+        subtotal: result.professionalSubtotal.base,
+        emptyText:
+          input.packageMode === "total_care" ? "已包括在所選套餐" : "暫未加入媽媽專業費"
+      },
+      {
+        id: "baby",
+        title: "BB費用",
+        description: "兒科巡房、BB留院、篩查及治療",
+        icon: <Baby size={16} />,
+        items: babyItems,
+        subtotal: result.babySubtotal.base,
+        emptyText: "暫未加入BB費用"
+      }
+    ];
+  }, [input.packageMode, result]);
   const activeTimingOptions =
     input.delivery === "natural" ? naturalTimingOptions : timingOptions;
   const supportsPackageMode =
@@ -603,24 +644,46 @@ function App() {
             <section className="breakdown-section">
               <div className="result-section-title">
                 <h3>費用明細</h3>
-                <span>{result.breakdown.length} 項</span>
+                <span>{breakdownGroups.length} 類 · {result.breakdown.length} 項</span>
               </div>
-              <div className="breakdown-table">
-                {result.breakdown.map((item) => (
-                  <div className="breakdown-row" key={item.id}>
-                    <div className="breakdown-copy">
-                      <div className="breakdown-label-row">
-                        <strong>{item.label}</strong>
-                        <span className={`source-tag ${item.source}`}>
-                          {sourceLabels[item.source]}
-                        </span>
+              <div className="breakdown-groups">
+                {breakdownGroups.map((group) => (
+                  <section className="breakdown-group" key={group.id}>
+                    <div className="breakdown-group-header">
+                      <div className="breakdown-group-copy">
+                        {group.icon}
+                        <div>
+                          <h4>{group.title}</h4>
+                          <span>
+                            {group.description} · {group.items.length} 項
+                          </span>
+                        </div>
                       </div>
-                      <span className="breakdown-detail">{item.detail}</span>
+                      <strong>{money.format(group.subtotal)}</strong>
                     </div>
-                    <div className="amount">
-                      <strong>{money.format(item.base)}</strong>
+                    <div className="breakdown-table">
+                      {group.items.length > 0 ? (
+                        group.items.map((item) => (
+                          <div className="breakdown-row" key={item.id}>
+                            <div className="breakdown-copy">
+                              <div className="breakdown-label-row">
+                                <strong>{item.label}</strong>
+                                <span className={`source-tag ${item.source}`}>
+                                  {sourceLabels[item.source]}
+                                </span>
+                              </div>
+                              <span className="breakdown-detail">{item.detail}</span>
+                            </div>
+                            <div className="amount">
+                              <strong>{money.format(item.base)}</strong>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="breakdown-empty">{group.emptyText}</div>
+                      )}
                     </div>
-                  </div>
+                  </section>
                 ))}
               </div>
             </section>
