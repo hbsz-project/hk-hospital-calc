@@ -1,4 +1,4 @@
-export type DeliveryScenario = "elective" | "direct_emergency" | "after_labor";
+export type DeliveryScenario = "natural" | "elective" | "direct_emergency" | "after_labor";
 export type TimingScenario = "standard" | "specified" | "off_hours";
 export type PackageMode = "standard" | "hospital" | "total_care";
 export type Confidence = "high" | "medium" | "low";
@@ -153,8 +153,9 @@ export interface CalculatorInput {
   babyCount: number;
   extraMotherNights: number;
   extraBabyNights: number;
-  jaundiceReserve: boolean;
-  contingencyPercent: number;
+  epidural: boolean;
+  instrumentalDelivery: boolean;
+  babyScreeningFee: number;
   professionalQuote: ProfessionalQuote;
 }
 

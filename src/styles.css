@@ -334,7 +334,7 @@ a {
 
 .delivery-options {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -492,28 +492,22 @@ a {
   font-size: 10px;
 }
 
-.range-field {
+.natural-options {
   display: grid;
-  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.baby-screening-field {
+  display: grid;
+  gap: 8px;
   margin-top: 22px;
 }
 
-.range-field > span {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.range-field > span strong {
-  color: var(--teal);
-  font-size: 16px;
-}
-
-.range-field input {
-  width: 100%;
-  accent-color: var(--teal);
+.baby-screening-field > small {
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.55;
 }
 
 .quote-panel,
@@ -618,7 +612,7 @@ a {
   gap: 6px;
   margin: 0;
   font-family: "Noto Serif TC", serif;
-  font-size: 28px;
+  font-size: 18px;
   line-height: 1.35;
 }
 
@@ -693,43 +687,9 @@ a {
   font-size: 10px;
 }
 
-.three-point {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin-top: 12px;
-  border: 1px solid var(--line);
-  background: white;
-}
-
-.three-point > div {
-  display: grid;
-  min-width: 0;
-  gap: 3px;
-  padding: 12px;
-  border-right: 1px solid var(--line);
-}
-
-.three-point > div:last-child {
-  border-right: 0;
-}
-
-.three-point > div.active {
-  background: var(--teal-soft);
-}
-
-.three-point span {
-  color: var(--muted);
-  font-size: 9px;
-}
-
-.three-point strong {
-  overflow-wrap: anywhere;
-  font-size: 12px;
-}
-
 .subtotal-strip {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1px;
   margin-top: 22px;
   background: var(--line);
@@ -1036,6 +996,7 @@ footer {
 
   .option-grid,
   .dual-steppers,
+  .natural-options,
   .quote-grid {
     grid-template-columns: 1fr;
   }
@@ -1051,7 +1012,7 @@ footer {
   }
 
   .subtotal-strip {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
   }
 
   .estimate-heading {

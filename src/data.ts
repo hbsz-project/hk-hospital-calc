@@ -1,7 +1,20 @@
 import rawDatabase from "./data/database.json";
-import type { CalculatorDatabase } from "./types";
+import naturalData from "./data/natural-data.json";
+import type { CalculatorDatabase, FeeItem, MaternityPackage } from "./types";
 
-export const database = rawDatabase as CalculatorDatabase;
+const baseDatabase = rawDatabase as CalculatorDatabase;
+
+export const database: CalculatorDatabase = {
+  ...baseDatabase,
+  packages: [
+    ...baseDatabase.packages,
+    ...(naturalData.packages as MaternityPackage[])
+  ],
+  feeItems: [
+    ...baseDatabase.feeItems,
+    ...(naturalData.feeItems as FeeItem[])
+  ]
+};
 
 export const hospitals = database.hospitals.filter((hospital) =>
   database.packages.some((item) => item.hospitalId === hospital.id)

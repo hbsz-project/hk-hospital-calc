@@ -7,7 +7,6 @@ import {
   CalendarClock,
   CheckCircle2,
   ChevronDown,
-  CircleDollarSign,
   ClipboardList,
   ExternalLink,
   FileCheck2,
@@ -36,6 +35,7 @@ const money = new Intl.NumberFormat("zh-HK", {
 });
 
 const deliveryOptions: Array<{ value: DeliveryScenario; label: string; hint: string }> = [
+  { value: "natural", label: "自然分娩", hint: "順產／需要時選無痛" },
   { value: "elective", label: "預約剖腹", hint: "預先安排手術" },
   { value: "direct_emergency", label: "直接緊急剖腹", hint: "未使用產房" },
   { value: "after_labor", label: "試產後緊急剖腹", hint: "曾使用產房" }
@@ -45,6 +45,11 @@ const timingOptions: Array<{ value: TimingScenario; label: string }> = [
   { value: "standard", label: "正常時段" },
   { value: "specified", label: "日間指定時辰" },
   { value: "off_hours", label: "夜間／假日" }
+];
+
+const naturalTimingOptions: Array<{ value: TimingScenario; label: string }> = [
+  { value: "standard", label: "正常時段" },
+  { value: "off_hours", label: "星期日／假日催生" }
 ];
 
 const sourceLabels = {
@@ -97,12 +102,14 @@ function CurrencyInput({
   label,
   value,
   onChange,
-  suffix
+  suffix,
+  placeholder = "使用系統估算"
 }: {
   label: string;
   value?: number;
   onChange: (value: number | undefined) => void;
   suffix?: string;
+  placeholder?: string;
 }) {
   return (
     <label className="currency-field">
@@ -112,7 +119,7 @@ function CurrencyInput({
         <input
           inputMode="numeric"
           min="0"
-          placeholder="使用系統估算"
+          placeholder={placeholder}
           value={value ?? ""}
           onChange={(event) =>
             onChange(event.target.value === "" ? undefined : Number(event.target.value))
@@ -135,14 +142,17 @@ function App() {
     babyCount: 1,
     extraMotherNights: 0,
     extraBabyNights: 0,
-    jaundiceReserve: false,
-    contingencyPercent: 10,
+    epidural: false,
+    instrumentalDelivery: false,
+    babyScreeningFee: 0,
     professionalQuote: {}
   });
 
   const rooms = useMemo(() => getRooms(input.hospitalId), [input.hospitalId]);
   const result = useMemo(() => calculateEstimate(input), [input]);
   const hospital = hospitals.find((item) => item.id === input.hospitalId);
+  const activeTimingOptions =
+    input.delivery === "natural" ? naturalTimingOptions : timingOptions;
   const supportsPackageMode =
     hasPackageMode(input.hospitalId, "hospital") &&
     hasPackageMode(input.hospitalId, "total_care");
@@ -204,7 +214,7 @@ function App() {
         </div>
         <div className="brand-copy">
           <span>香港私家醫院</span>
-          <strong>剖腹分娩費用估算器</strong>
+          <strong>分娩費用估算器</strong>
         </div>
         <div className="data-stamp">
           <FileCheck2 size={16} />
@@ -304,15 +314,15 @@ function App() {
           <div className="intro-line compact">
             <span>02</span>
             <div>
-              <h2>手術情境</h2>
-              <p>緊急程度與時段可令院方及醫生費同時增加。</p>
+              <h2>分娩情境</h2>
+              <p>分娩方式、時段及無痛分娩會影響院方與專業費。</p>
             </div>
           </div>
 
           <fieldset className="field-group">
             <legend>
               <HeartPulse size={17} />
-              剖腹情況
+              分娩方式
             </legend>
             <div className="delivery-options">
               {deliveryOptions.map((option) => (
@@ -320,7 +330,15 @@ function App() {
                   key={option.value}
                   type="button"
                   className={input.delivery === option.value ? "selected" : ""}
-                  onClick={() => update("delivery", option.value)}
+                  onClick={() =>
+                    setInput((current) => ({
+                      ...current,
+                      delivery: option.value,
+                      timing: "standard",
+                      epidural: false,
+                      instrumentalDelivery: false
+                    }))
+                  }
                 >
                   <span>{option.label}</span>
                   <small>{option.hint}</small>
@@ -332,10 +350,10 @@ function App() {
           <fieldset className="field-group">
             <legend>
               <CalendarClock size={17} />
-              手術時段
+              {input.delivery === "natural" ? "分娩時段" : "手術時段"}
             </legend>
             <div className="segmented timing">
-              {timingOptions.map((option) => (
+              {activeTimingOptions.map((option) => (
                 <button
                   key={option.value}
                   type="button"
@@ -347,6 +365,35 @@ function App() {
               ))}
             </div>
           </fieldset>
+
+          {input.delivery === "natural" && (
+            <div className="natural-options">
+              <label className="toggle-row">
+                <input
+                  type="checkbox"
+                  checked={input.epidural}
+                  onChange={(event) => update("epidural", event.target.checked)}
+                />
+                <span className="toggle" aria-hidden="true" />
+                <span>
+                  <strong>無痛分娩</strong>
+                  <small>加入院方硬膜外麻醉及麻醉師專業費</small>
+                </span>
+              </label>
+              <label className="toggle-row">
+                <input
+                  type="checkbox"
+                  checked={input.instrumentalDelivery}
+                  onChange={(event) => update("instrumentalDelivery", event.target.checked)}
+                />
+                <span className="toggle" aria-hidden="true" />
+                <span>
+                  <strong>需要真空吸引／產鉗</strong>
+                  <small>只在已知院方固定價時加入</small>
+                </span>
+              </label>
+            </div>
+          )}
 
           <div className="dual-steppers">
             <label>
@@ -382,8 +429,8 @@ function App() {
           <div className="intro-line compact">
             <span>03</span>
             <div>
-              <h2>額外預留</h2>
-              <p>媽媽與BB延遲出院會分開計算。</p>
+              <h2>BB及額外項目</h2>
+              <p>媽媽與BB延遲出院分開計算；只加入實際已知項目。</p>
             </div>
           </div>
 
@@ -410,33 +457,18 @@ function App() {
             </label>
           </div>
 
-          <label className="toggle-row">
-            <input
-              type="checkbox"
-              checked={input.jaundiceReserve}
-              onChange={(event) => update("jaundiceReserve", event.target.checked)}
+          <div className="baby-screening-field">
+            <CurrencyInput
+              label="額外代謝病篩查／其他BB化驗費（每名BB）"
+              placeholder="如有帳單金額才輸入"
+              value={input.babyScreeningFee || undefined}
+              onChange={(value) => update("babyScreeningFee", value ?? 0)}
+              suffix="/ BB"
             />
-            <span className="toggle" aria-hidden="true" />
-            <span>
-              <strong>預留BB黃疸／額外護理</strong>
-              <small>加入通用風險範圍，不代表院方報價</small>
-            </span>
-          </label>
-
-          <label className="range-field">
-            <span>
-              <span>雜費及突發預備金</span>
-              <strong>{input.contingencyPercent}%</strong>
-            </span>
-            <input
-              type="range"
-              min="5"
-              max="20"
-              step="1"
-              value={input.contingencyPercent}
-              onChange={(event) => update("contingencyPercent", Number(event.target.value))}
-            />
-          </label>
+            {input.hospitalId === "UH" && (
+              <small>仁安套餐已包括 G6PD、TSH、血型及聽力篩查；此欄只填其他額外化驗。</small>
+            )}
+          </div>
 
           {!result.selectedPackage?.professionalIncluded && (
             <details className="quote-panel">
@@ -449,15 +481,17 @@ function App() {
               </summary>
               <div className="quote-grid">
                 <CurrencyInput
-                  label="產科醫生手術費"
+                  label={input.delivery === "natural" ? "產科醫生接生費" : "產科醫生手術費"}
                   value={input.professionalQuote.obstetrician}
                   onChange={(value) => updateQuote("obstetrician", value)}
                 />
-                <CurrencyInput
-                  label="麻醉師費"
-                  value={input.professionalQuote.anaesthetist}
-                  onChange={(value) => updateQuote("anaesthetist", value)}
-                />
+                {(input.delivery !== "natural" || input.epidural) && (
+                  <CurrencyInput
+                    label="麻醉師費"
+                    value={input.professionalQuote.anaesthetist}
+                    onChange={(value) => updateQuote("anaesthetist", value)}
+                  />
+                )}
                 <CurrencyInput
                   label="產科醫生巡房"
                   suffix="/ 日"
@@ -465,7 +499,7 @@ function App() {
                   onChange={(value) => updateQuote("obstetricianRoundPerDay", value)}
                 />
                 <CurrencyInput
-                  label="兒科醫生巡房"
+                  label="BB兒科醫生巡房"
                   suffix="/ BB / 日"
                   value={input.professionalQuote.paediatricianRoundPerBabyDay}
                   onChange={(value) => updateQuote("paediatricianRoundPerBabyDay", value)}
@@ -479,12 +513,8 @@ function App() {
           <div className="result-sticky">
             <div className="estimate-heading">
               <div>
-                <span className="eyebrow">預計總埋單</span>
-                <h2>
-                  {money.format(result.low)}
-                  <span>至</span>
-                  {money.format(result.high)}
-                </h2>
+                <span className="eyebrow">目前條件</span>
+                <h2>{hospital?.name} · {deliveryOptions.find((item) => item.value === input.delivery)?.label}</h2>
               </div>
               <div className={`confidence-badge ${result.confidence}`}>
                 <ShieldCheck size={17} />
@@ -496,24 +526,9 @@ function App() {
             </div>
 
             <div className="likely-total">
-              <span>較可能預算</span>
+              <span>估算總額</span>
               <strong>{money.format(result.base)}</strong>
-              <small>建議以此數再核對醫生正式報價</small>
-            </div>
-
-            <div className="three-point">
-              <div>
-                <span>低位</span>
-                <strong>{money.format(result.low)}</strong>
-              </div>
-              <div className="active">
-                <span>較可能</span>
-                <strong>{money.format(result.base)}</strong>
-              </div>
-              <div>
-                <span>高位</span>
-                <strong>{money.format(result.high)}</strong>
-              </div>
+              <small>按已知院方項目、專業費估算及你的輸入計算</small>
             </div>
 
             <div className="subtotal-strip">
@@ -524,18 +539,13 @@ function App() {
               </div>
               <div>
                 <Stethoscope size={16} />
-                <span>專業費</span>
+                <span>媽媽專業費</span>
                 <strong>{money.format(result.professionalSubtotal.base)}</strong>
               </div>
               <div>
                 <Baby size={16} />
                 <span>BB</span>
                 <strong>{money.format(result.babySubtotal.base)}</strong>
-              </div>
-              <div>
-                <CircleDollarSign size={16} />
-                <span>預備金</span>
-                <strong>{money.format(result.reserveSubtotal.base)}</strong>
               </div>
             </div>
 
@@ -558,11 +568,6 @@ function App() {
                     </div>
                     <div className="amount">
                       <strong>{money.format(item.base)}</strong>
-                      {item.low !== item.high && (
-                        <span>
-                          {money.format(item.low)}–{money.format(item.high)}
-                        </span>
-                      )}
                     </div>
                   </div>
                 ))}

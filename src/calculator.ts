@@ -46,7 +46,9 @@ export function selectPackage(input: CalculatorInput): MaternityPackage | null {
   const exactDelivery = sameRoom.filter((item) => item.delivery === input.delivery);
   const pool = exactDelivery.length
     ? exactDelivery
-    : sameRoom.filter((item) => item.delivery === "elective");
+    : input.delivery === "natural"
+      ? []
+      : sameRoom.filter((item) => item.delivery === "elective");
 
   return [...pool].sort((a, b) => packageDistance(a, input) - packageDistance(b, input))[0] ?? null;
 }
@@ -181,6 +183,8 @@ function getProfessional(input: CalculatorInput, selected: MaternityPackage) {
     return {
       band: zeroBand(),
       items: [] as BreakdownItem[],
+      babyBand: zeroBand(),
+      babyItems: [] as BreakdownItem[],
       confidence: "high" as Confidence,
       note: "所選全包套餐已包括指定專業費。"
     };
@@ -191,19 +195,42 @@ function getProfessional(input: CalculatorInput, selected: MaternityPackage) {
     return {
       band: zeroBand(),
       items: [] as BreakdownItem[],
+      babyBand: zeroBand(),
+      babyItems: [] as BreakdownItem[],
       confidence: "low" as Confidence,
       note: "未有足夠專業費資料。"
     };
   }
 
-  const components = [
-    ["obstetrician", "產科醫生手術費", "一次性手術／接生專業費"],
-    ["anaesthetist", "麻醉師費", "按麻醉師報價或產科醫生費比例估算"],
-    ["obRound", "產科醫生巡房", `${input.stayDays} 日`],
-    ["paediatrician", "兒科醫生巡房", `${input.babyCount} 名BB × ${input.stayDays} 日`]
-  ] as const;
+  type ComponentKey = "obstetrician" | "anaesthetist" | "obRound" | "paediatrician";
+  const components: Array<[ComponentKey, string, string]> = [
+    [
+      "obstetrician",
+      input.delivery === "natural" ? "產科醫生接生費" : "產科醫生手術費",
+      input.delivery === "natural" ? "一次性接生專業費" : "一次性剖腹手術專業費"
+    ],
+    ["obRound", "產科醫生巡房", `${input.stayDays} 日`]
+  ];
 
-  const items: BreakdownItem[] = components.map(([key, label, detail]) => {
+  if (input.delivery !== "natural" || input.epidural) {
+    components.splice(1, 0, [
+      "anaesthetist",
+      "麻醉師費",
+      input.delivery === "natural"
+        ? "選用無痛分娩時的麻醉專業費估算"
+        : "按麻醉師報價或產科醫生費比例估算"
+    ]);
+  }
+
+  if (!selected.paediatricianIncluded) {
+    components.push([
+      "paediatrician",
+      "BB兒科醫生巡房費",
+      `${input.babyCount} 名BB × ${input.stayDays} 日`
+    ]);
+  }
+
+  const allItems: BreakdownItem[] = components.map(([key, label, detail]) => {
     const band = componentBand(profile, key, input);
     const quoteKey = {
       obstetrician: input.professionalQuote.obstetrician,
@@ -216,32 +243,21 @@ function getProfessional(input: CalculatorInput, selected: MaternityPackage) {
       label,
       detail,
       ...band,
-      kind: "professional" as const,
+      kind: key === "paediatrician" ? ("baby" as const) : ("professional" as const),
       source: quoteKey !== undefined ? ("user" as const) : ("estimate" as const)
     };
   });
 
-  let band = items.reduce(
+  const items = allItems.filter((item) => item.kind === "professional");
+  const babyItems = allItems.filter((item) => item.kind === "baby");
+  const band = items.reduce(
     (sum, item) => addBand(sum, { low: item.low, base: item.base, high: item.high }),
     zeroBand()
   );
-
-  if (input.delivery !== "elective" || input.timing !== "standard") {
-    const reserve = {
-      low: 0,
-      base: band.base * 0.1,
-      high: band.high * 0.25
-    };
-    items.push({
-      id: "professional-scenario-reserve",
-      label: "專業費時段／緊急預留",
-      detail: "個別醫療團隊可能另加，正式比例須向醫生確認",
-      ...reserve,
-      kind: "professional",
-      source: "estimate"
-    });
-    band = addBand(band, reserve);
-  }
+  const babyBand = babyItems.reduce(
+    (sum, item) => addBand(sum, { low: item.low, base: item.base, high: item.high }),
+    zeroBand()
+  );
 
   return {
     band: {
@@ -250,6 +266,12 @@ function getProfessional(input: CalculatorInput, selected: MaternityPackage) {
       high: roundMoney(band.high)
     },
     items,
+    babyBand: {
+      low: roundMoney(babyBand.low),
+      base: roundMoney(babyBand.base),
+      high: roundMoney(babyBand.high)
+    },
+    babyItems,
     confidence: profile.confidence === "中" ? ("medium" as Confidence) : ("low" as Confidence),
     note: profile.note
   };
@@ -303,6 +325,73 @@ function getBabyNightRate(input: CalculatorInput) {
   if (!item) return null;
   const value = item.standard ?? item.semiPrivate ?? item.private;
   return value ? { value, sourceUrl: item.sourceUrl } : null;
+}
+
+function getFeeItemAmount(input: CalculatorInput, item: (typeof database.feeItems)[number]) {
+  const roomClass = classifyRoom(input.room);
+  if (input.hospitalId === "UH" && input.room.includes("半私家雙人房")) {
+    return item.standard;
+  }
+  if (roomClass === "private") return item.private ?? item.semiPrivate ?? item.standard;
+  if (roomClass === "semi") return item.semiPrivate ?? item.standard ?? item.private;
+  return item.standard ?? item.semiPrivate ?? item.private;
+}
+
+function getNaturalHospitalExtras(input: CalculatorInput) {
+  const items: BreakdownItem[] = [];
+  const sourceUrls: string[] = [];
+
+  const addFee = (pattern: RegExp, id: string, label: string, detail: string) => {
+    const feeItem = database.feeItems.find(
+      (item) => item.hospitalId === input.hospitalId && pattern.test(item.name)
+    );
+    if (!feeItem) return false;
+    const amount = getFeeItemAmount(input, feeItem);
+    if (amount === null) return false;
+    sourceUrls.push(feeItem.sourceUrl);
+    items.push({
+      id,
+      label,
+      detail,
+      low: amount,
+      base: amount,
+      high: amount,
+      kind: "hospital",
+      source: "verified"
+    });
+    return true;
+  };
+
+  if (input.epidural) {
+    addFee(
+      /無痛分娩|硬膜外麻醉|硬脊膜外麻醉|產房內硬膜外麻醉/,
+      "natural-epidural",
+      "院方無痛分娩費",
+      "麻醉師專業費另列於專業費"
+    );
+  }
+  if (input.instrumentalDelivery) {
+    addFee(
+      /助產器械|儀器輔助分娩/,
+      "natural-instrumental",
+      "院方助產器械費",
+      "真空吸引或產鉗"
+    );
+  }
+  if (input.timing === "off_hours") {
+    addFee(
+      /星期六、日及公眾假期催生附加/,
+      "natural-holiday-induction",
+      "假日催生附加",
+      "星期六、日或公眾假期"
+    );
+  }
+
+  const band = items.reduce(
+    (sum, item) => addBand(sum, { low: item.low, base: item.base, high: item.high }),
+    zeroBand()
+  );
+  return { items, band, sourceUrls };
 }
 
 function confidenceRank(value: Confidence) {
@@ -380,7 +469,10 @@ export function calculateEstimate(input: CalculatorInput): CalculatorResult {
     warnings.push("院方未清楚公開套餐是否已包括房租；目前未重複加入房租。");
   }
 
-  const timing = timingSurcharge(input, selected);
+  const timing =
+    input.delivery === "natural"
+      ? { band: zeroBand(), rows: [] as Surcharge[] }
+      : timingSurcharge(input, selected);
   if (timing.rows.length) timing.rows.forEach((row) => sourceUrls.add(row.sourceUrl));
   if (timing.band.high > 0) {
     breakdown.push({
@@ -392,7 +484,11 @@ export function calculateEstimate(input: CalculatorInput): CalculatorResult {
       source: "verified"
     });
     hospitalSubtotal = addBand(hospitalSubtotal, timing.band);
-  } else if (input.timing !== "standard" && selected.timing !== input.timing) {
+  } else if (
+    input.delivery !== "natural" &&
+    input.timing !== "standard" &&
+    selected.timing !== input.timing
+  ) {
     warnings.push("所選醫院未有公開這個時段的固定附加費，結果未計入該項。");
   }
 
@@ -410,6 +506,22 @@ export function calculateEstimate(input: CalculatorInput): CalculatorResult {
     hospitalSubtotal = addBand(hospitalSubtotal, emergency.band);
   } else if (input.delivery === "direct_emergency" && selected.delivery !== "direct_emergency") {
     warnings.push("院方確認設有緊急剖腹附加，但固定金額未公開，結果可能偏低。");
+  }
+
+  if (input.delivery === "natural") {
+    const extras = getNaturalHospitalExtras(input);
+    breakdown.push(...extras.items);
+    hospitalSubtotal = addBand(hospitalSubtotal, extras.band);
+    extras.sourceUrls.forEach((url) => sourceUrls.add(url));
+    if (input.epidural && !extras.items.some((item) => item.id === "natural-epidural")) {
+      warnings.push("所選醫院未有公開無痛分娩院方固定價，現時只計麻醉師專業費估算。");
+    }
+    if (
+      input.instrumentalDelivery &&
+      !extras.items.some((item) => item.id === "natural-instrumental")
+    ) {
+      warnings.push("所選醫院未有公開助產器械固定價，結果未計入該項。");
+    }
   }
 
   if (input.babyCount > 1) {
@@ -480,52 +592,51 @@ export function calculateEstimate(input: CalculatorInput): CalculatorResult {
     }
   }
 
-  if (input.jaundiceReserve) {
-    const jaundiceBand = {
-      low: 5700 * input.babyCount,
-      base: 9000 * input.babyCount,
-      high: 17000 * input.babyCount
-    };
+  if (input.hospitalId === "UH") {
     breakdown.push({
-      id: "jaundice",
-      label: "BB黃疸／額外護理預留",
-      detail: `${input.babyCount} 名BB · 通用風險預算`,
-      ...jaundiceBand,
+      id: "uh-baby-included-screening",
+      label: "仁安初生BB基本篩查",
+      detail: "套餐已包括 G6PD、TSH、血型及聽力篩查",
+      low: 0,
+      base: 0,
+      high: 0,
       kind: "baby",
-      source: "estimate"
+      source: "verified"
     });
-    babySubtotal = addBand(babySubtotal, jaundiceBand);
-    warnings.push("BB黃疸預留是跨院風險情境，並非所選醫院正式報價。");
+  }
+
+  if (input.babyScreeningFee > 0) {
+    const amount = input.babyScreeningFee * input.babyCount;
+    const screeningBand = { low: amount, base: amount, high: amount };
+    breakdown.push({
+      id: "baby-extra-screening",
+      label: "額外代謝病篩查／BB化驗",
+      detail: `${input.babyCount} 名BB · 按輸入金額`,
+      ...screeningBand,
+      kind: "baby",
+      source: "user"
+    });
+    babySubtotal = addBand(babySubtotal, screeningBand);
   }
 
   const professional = getProfessional(input, selected);
-  breakdown.push(...professional.items);
+  breakdown.push(...professional.items, ...professional.babyItems);
   const professionalSubtotal = professional.band;
+  babySubtotal = addBand(babySubtotal, professional.babyBand);
 
   if (!selected.professionalIncluded) {
     warnings.push(
       professional.confidence === "low"
-        ? "專業費採用跨醫院房型估算，正式醫生報價可明顯收窄範圍。"
+        ? "專業費採用跨醫院房型估算；輸入正式醫生報價後會直接取代估算。"
         : professional.note
     );
   }
+  if (input.delivery === "natural") {
+    warnings.push("自然分娩專業費暫按現有房型Profile估算；沒有選無痛分娩時不計麻醉師費。");
+  }
 
-  const beforeReserve = addBand(addBand(hospitalSubtotal, professionalSubtotal), babySubtotal);
-  const reserveSubtotal = {
-    low: beforeReserve.low * Math.max(0.05, input.contingencyPercent / 100 - 0.05),
-    base: beforeReserve.base * (input.contingencyPercent / 100),
-    high: beforeReserve.high * Math.max(0.15, input.contingencyPercent / 100 + 0.05)
-  };
-  breakdown.push({
-    id: "contingency",
-    label: "雜費及突發預備金",
-    detail: `基準 ${input.contingencyPercent}%`,
-    ...reserveSubtotal,
-    kind: "reserve",
-    source: "estimate"
-  });
-
-  const total = addBand(beforeReserve, reserveSubtotal);
+  const total = addBand(addBand(hospitalSubtotal, professionalSubtotal), babySubtotal);
+  const reserveSubtotal = zeroBand();
   const hospital = getHospital(input.hospitalId);
   const hospitalConfidence: Confidence =
     selected.sourceType === "secondary"
@@ -544,9 +655,9 @@ export function calculateEstimate(input: CalculatorInput): CalculatorResult {
           : "突發檢查、藥物及BB護理";
 
   return {
-    low: roundMoney(total.low),
+    low: roundMoney(total.base),
     base: roundMoney(total.base),
-    high: roundMoney(total.high),
+    high: roundMoney(total.base),
     hospitalSubtotal,
     professionalSubtotal,
     babySubtotal,

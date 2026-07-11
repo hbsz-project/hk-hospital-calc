@@ -12,8 +12,9 @@ const baseInput: CalculatorInput = {
   babyCount: 1,
   extraMotherNights: 0,
   extraBabyNights: 0,
-  jaundiceReserve: false,
-  contingencyPercent: 10,
+  epidural: false,
+  instrumentalDelivery: false,
+  babyScreeningFee: 0,
   professionalQuote: {}
 };
 
@@ -23,17 +24,19 @@ describe("maternity cost calculator", () => {
 
     expect(result.selectedPackage?.price).toBe(26000);
     expect(result.hospitalSubtotal.base).toBe(29900);
-    expect(result.professionalSubtotal.base).toBe(55000);
+    expect(result.professionalSubtotal.base).toBe(45000);
+    expect(result.babySubtotal.base).toBe(10000);
     expect(result.breakdown.some((item) => item.id === "room")).toBe(true);
-    expect(result.base).toBe(93390);
+    expect(result.base).toBe(84900);
   });
 
   it("uses the Union Hospital private-room +75% profile", () => {
     const result = calculateEstimate({ ...baseInput, room: "私家房" });
 
-    expect(result.professionalSubtotal.base).toBe(96250);
+    expect(result.professionalSubtotal.base).toBe(78750);
+    expect(result.babySubtotal.base).toBe(17500);
     expect(result.selectedPackage?.price).toBe(44800);
-    expect(result.high).toBeGreaterThan(result.base);
+    expect(result.high).toBe(result.base);
   });
 
   it("does not add a second multifetal surcharge to the dedicated twin package", () => {
@@ -89,5 +92,31 @@ describe("maternity cost calculator", () => {
 
     expect(item?.base).toBe(28000);
     expect(item?.source).toBe("user");
+  });
+
+  it("calculates a natural delivery without anaesthetist fees when epidural is not selected", () => {
+    const result = calculateEstimate({
+      ...baseInput,
+      delivery: "natural",
+      stayDays: 4
+    });
+
+    expect(result.selectedPackage?.delivery).toBe("natural");
+    expect(result.selectedPackage?.price).toBe(22500);
+    expect(result.breakdown.some((item) => item.id === "professional-anaesthetist")).toBe(false);
+    expect(result.base).toBe(67620);
+  });
+
+  it("places paediatric rounds and extra screening in the BB subtotal", () => {
+    const result = calculateEstimate({
+      ...baseInput,
+      babyScreeningFee: 2500
+    });
+
+    expect(result.babySubtotal.base).toBe(12500);
+    expect(result.breakdown.find((item) => item.id === "professional-paediatrician")?.kind).toBe(
+      "baby"
+    );
+    expect(result.breakdown.find((item) => item.id === "baby-extra-screening")?.base).toBe(2500);
   });
 });
