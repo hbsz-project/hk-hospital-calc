@@ -547,9 +547,14 @@ function App() {
               <div className="breakdown-table">
                 {result.breakdown.map((item) => (
                   <div className="breakdown-row" key={item.id}>
-                    <div>
-                      <strong>{item.label}</strong>
-                      <span>{item.detail}</span>
+                    <div className="breakdown-copy">
+                      <div className="breakdown-label-row">
+                        <strong>{item.label}</strong>
+                        <span className={`source-tag ${item.source}`}>
+                          {sourceLabels[item.source]}
+                        </span>
+                      </div>
+                      <span className="breakdown-detail">{item.detail}</span>
                     </div>
                     <div className="amount">
                       <strong>{money.format(item.base)}</strong>
@@ -559,9 +564,6 @@ function App() {
                         </span>
                       )}
                     </div>
-                    <span className={`source-tag ${item.source}`}>
-                      {sourceLabels[item.source]}
-                    </span>
                   </div>
                 ))}
               </div>
