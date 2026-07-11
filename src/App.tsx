@@ -366,6 +366,19 @@ function App() {
             </div>
           </fieldset>
 
+          {input.hospitalId === "UH" &&
+            input.room === "標準房" &&
+            input.delivery !== "natural" &&
+            input.timing === "off_hours" && (
+              <div className="timing-rule-note">
+                <Info size={16} />
+                <span>
+                  仁安標準房實際經驗：夜間／假日的產科醫生手術費及麻醉師費各加
+                  <strong> 50%</strong>。
+                </span>
+              </div>
+            )}
+
           {input.delivery === "natural" && (
             <div className="natural-options">
               <label className="toggle-row">

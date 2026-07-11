@@ -498,6 +498,24 @@ a {
   gap: 18px;
 }
 
+.timing-rule-note {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-left: 3px solid var(--coral);
+  background: var(--coral-soft);
+  color: #723628;
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.timing-rule-note svg {
+  margin-top: 1px;
+  color: var(--coral);
+}
+
 .baby-screening-field {
   display: grid;
   gap: 8px;

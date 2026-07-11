@@ -248,6 +248,32 @@ function getProfessional(input: CalculatorInput, selected: MaternityPackage) {
     };
   });
 
+  const unionStandardOffHours =
+    input.hospitalId === "UH" &&
+    input.room === "標準房" &&
+    input.delivery !== "natural" &&
+    input.timing === "off_hours";
+
+  if (unionStandardOffHours) {
+    const obstetrician = allItems.find((item) => item.id === "professional-obstetrician");
+    const anaesthetist = allItems.find((item) => item.id === "professional-anaesthetist");
+    if (obstetrician && anaesthetist) {
+      const surcharge = {
+        low: obstetrician.low * 0.5 + anaesthetist.low * 0.5,
+        base: obstetrician.base * 0.5 + anaesthetist.base * 0.5,
+        high: obstetrician.high * 0.5 + anaesthetist.high * 0.5
+      };
+      allItems.push({
+        id: "professional-uh-standard-off-hours",
+        label: "仁安夜間／假日專業費附加",
+        detail: "標準房：產科醫生手術費及麻醉師費各加 50%",
+        ...surcharge,
+        kind: "professional",
+        source: "estimate"
+      });
+    }
+  }
+
   const items = allItems.filter((item) => item.kind === "professional");
   const babyItems = allItems.filter((item) => item.kind === "baby");
   const band = items.reduce(
@@ -629,6 +655,16 @@ export function calculateEstimate(input: CalculatorInput): CalculatorResult {
       professional.confidence === "low"
         ? "專業費採用跨醫院房型估算；輸入正式醫生報價後會直接取代估算。"
         : professional.note
+    );
+  }
+  if (
+    input.hospitalId === "UH" &&
+    input.room === "標準房" &&
+    input.delivery !== "natural" &&
+    input.timing === "off_hours"
+  ) {
+    warnings.push(
+      "仁安標準房夜間／假日專業費按一宗實際經驗計算：產科醫生手術費及麻醉師費各加50%。"
     );
   }
   if (input.delivery === "natural") {

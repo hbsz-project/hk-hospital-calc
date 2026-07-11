@@ -119,4 +119,30 @@ describe("maternity cost calculator", () => {
     );
     expect(result.breakdown.find((item) => item.id === "baby-extra-screening")?.base).toBe(2500);
   });
+
+  it("adds 50% to both obstetrician and anaesthetist fees for Union standard-room off-hours", () => {
+    const result = calculateEstimate({
+      ...baseInput,
+      timing: "off_hours"
+    });
+    const surcharge = result.breakdown.find(
+      (item) => item.id === "professional-uh-standard-off-hours"
+    );
+
+    expect(surcharge?.base).toBe(20000);
+    expect(result.professionalSubtotal.base).toBe(65000);
+    expect(result.base).toBe(127900);
+  });
+
+  it("does not apply the Union standard-room professional surcharge to private rooms", () => {
+    const result = calculateEstimate({
+      ...baseInput,
+      room: "私家房",
+      timing: "off_hours"
+    });
+
+    expect(
+      result.breakdown.some((item) => item.id === "professional-uh-standard-off-hours")
+    ).toBe(false);
+  });
 });
