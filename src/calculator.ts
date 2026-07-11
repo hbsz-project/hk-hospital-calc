@@ -18,6 +18,10 @@ const addBand = (a: EstimateBand, b: EstimateBand): EstimateBand => ({
 });
 const roundMoney = (value: number) => Math.round(value / 10) * 10;
 
+function isEmergencyCSection(input: CalculatorInput) {
+  return input.delivery === "direct_emergency" || input.delivery === "after_labor";
+}
+
 function classifyRoom(room: string): "standard" | "semi" | "private" {
   if (/私家|套房|Private/i.test(room) && !/半私家/.test(room)) return "private";
   if (/半私家|雙人房|Twin|一人房|Single/i.test(room) && !/標準/.test(room)) {
@@ -248,10 +252,14 @@ function getProfessional(input: CalculatorInput, selected: MaternityPackage) {
     };
   });
 
-  const professionalOffHoursSurcharge =
-    input.timing === "off_hours" && input.professionalSurchargePercent > 0;
+  const professionalSurchargeTriggers = [
+    input.timing === "off_hours" ? "夜間／假日" : null,
+    isEmergencyCSection(input) ? "緊急剖腹" : null
+  ].filter((item): item is string => item !== null);
+  const professionalExtraSurcharge =
+    professionalSurchargeTriggers.length > 0 && input.professionalSurchargePercent > 0;
 
-  if (professionalOffHoursSurcharge) {
+  if (professionalExtraSurcharge) {
     const obstetrician = allItems.find((item) => item.id === "professional-obstetrician");
     const anaesthetist = allItems.find((item) => item.id === "professional-anaesthetist");
     const eligibleItems = [obstetrician, anaesthetist].filter(
@@ -265,8 +273,8 @@ function getProfessional(input: CalculatorInput, selected: MaternityPackage) {
         high: eligibleItems.reduce((sum, item) => sum + item.high * rate, 0)
       };
       allItems.push({
-        id: "professional-off-hours-surcharge",
-        label: "夜間／假日專業費附加",
+        id: "professional-extra-surcharge",
+        label: `${professionalSurchargeTriggers.join("及")}專業費附加`,
         detail: `產科醫生${input.delivery === "natural" ? "接生" : "手術"}費${
           anaesthetist ? "及麻醉師費" : ""
         }加 ${input.professionalSurchargePercent}%`,
@@ -661,12 +669,16 @@ export function calculateEstimate(input: CalculatorInput): CalculatorResult {
     );
   }
   if (
-    input.timing === "off_hours" &&
+    (input.timing === "off_hours" || isEmergencyCSection(input)) &&
     !selected.professionalIncluded &&
     input.professionalSurchargePercent > 0
   ) {
+    const triggers = [
+      input.timing === "off_hours" ? "夜間／假日" : null,
+      isEmergencyCSection(input) ? "緊急剖腹" : null
+    ].filter((item): item is string => item !== null);
     warnings.push(
-      `夜間／假日專業費暫按${input.professionalSurchargePercent}%計算；這是可修改假設，並非院方統一醫生收費。`
+      `${triggers.join("及")}專業費暫按${input.professionalSurchargePercent}%計算；這是可修改假設，並非院方統一醫生收費。`
     );
   }
   if (input.delivery === "natural") {

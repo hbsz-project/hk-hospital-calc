@@ -127,10 +127,11 @@ describe("maternity cost calculator", () => {
       timing: "off_hours"
     });
     const surcharge = result.breakdown.find(
-      (item) => item.id === "professional-off-hours-surcharge"
+      (item) => item.id === "professional-extra-surcharge"
     );
 
     expect(surcharge?.base).toBe(20000);
+    expect(surcharge?.label).toBe("夜間／假日專業費附加");
     expect(result.professionalSubtotal.base).toBe(65000);
     expect(result.base).toBe(127900);
   });
@@ -142,11 +143,25 @@ describe("maternity cost calculator", () => {
       professionalSurchargePercent: 25
     });
     const surcharge = result.breakdown.find(
-      (item) => item.id === "professional-off-hours-surcharge"
+      (item) => item.id === "professional-extra-surcharge"
     );
 
     expect(surcharge?.base).toBe(10000);
     expect(result.professionalSubtotal.base).toBe(55000);
+  });
+
+  it("applies the professional surcharge to emergency c-sections", () => {
+    const result = calculateEstimate({
+      ...baseInput,
+      delivery: "direct_emergency"
+    });
+    const surcharge = result.breakdown.find(
+      (item) => item.id === "professional-extra-surcharge"
+    );
+
+    expect(surcharge?.label).toBe("緊急剖腹專業費附加");
+    expect(surcharge?.base).toBe(20000);
+    expect(result.professionalSubtotal.base).toBe(65000);
   });
 
   it("does not add a professional off-hours surcharge to Matilda Total Care", () => {
@@ -160,7 +175,7 @@ describe("maternity cost calculator", () => {
 
     expect(result.selectedPackage?.professionalIncluded).toBe(true);
     expect(
-      result.breakdown.some((item) => item.id === "professional-off-hours-surcharge")
+      result.breakdown.some((item) => item.id === "professional-extra-surcharge")
     ).toBe(false);
   });
 });

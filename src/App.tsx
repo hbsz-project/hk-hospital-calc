@@ -141,10 +141,10 @@ function PercentageInput({
 }) {
   return (
     <label className="percentage-field">
-      <span>醫生及麻醉師假日附加</span>
+      <span>醫生及麻醉師額外附加</span>
       <div>
         <input
-          aria-label="專業費假日附加百分比"
+          aria-label="專業費額外附加百分比"
           inputMode="decimal"
           min="0"
           max="300"
@@ -442,7 +442,9 @@ function App() {
             </div>
           </fieldset>
 
-          {input.timing === "off_hours" &&
+          {(input.timing === "off_hours" ||
+            input.delivery === "direct_emergency" ||
+            input.delivery === "after_labor") &&
             !result.selectedPackage?.professionalIncluded && (
               <div className="professional-surcharge-control">
                 <PercentageInput
@@ -452,7 +454,7 @@ function App() {
                 <div className="timing-rule-note">
                   <Info size={16} />
                   <span>
-                    院方夜間／假日附加費會按醫院官方資料另行加入，不包括在這個百分比內。
+                    院方夜間／假日或緊急剖腹附加費會按醫院官方資料另行加入，不包括在這個百分比內。
                   </span>
                 </div>
               </div>
