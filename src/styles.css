@@ -870,22 +870,6 @@ a {
   color: var(--teal);
 }
 
-.breakdown-level-tag {
-  display: inline-flex;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: center;
-  min-width: 27px;
-  height: 18px;
-  margin-top: 1px;
-  border: 1px solid rgba(13, 107, 91, 0.25);
-  background: var(--paper);
-  color: var(--teal-dark);
-  font-size: 8px;
-  font-weight: 700;
-  line-height: 1;
-}
-
 .breakdown-group-copy h4 {
   margin: 0;
   font-size: 12px;
@@ -910,7 +894,7 @@ a {
 
 .breakdown-row {
   display: grid;
-  grid-template-columns: 39px minmax(0, 1fr) minmax(104px, auto);
+  grid-template-columns: minmax(0, 1fr) minmax(104px, auto);
   align-items: start;
   gap: 10px 14px;
   min-height: 68px;
@@ -927,20 +911,6 @@ a {
   color: var(--muted);
   font-size: 10px;
   line-height: 1.6;
-}
-
-.breakdown-row-marker {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  min-height: 18px;
-  margin-top: 1px;
-  background: var(--wash);
-  color: var(--muted);
-  font-size: 8px;
-  font-weight: 700;
-  line-height: 1;
 }
 
 .breakdown-copy {
@@ -1230,11 +1200,10 @@ footer {
   }
 
   .breakdown-row {
-    grid-template-columns: 39px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .amount {
-    grid-column: 2;
     justify-items: start;
     text-align: left;
   }

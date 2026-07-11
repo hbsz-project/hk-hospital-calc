@@ -653,7 +653,6 @@ function App() {
                   <section className="breakdown-group" key={group.id}>
                     <div className="breakdown-group-header">
                       <div className="breakdown-group-copy">
-                        <span className="breakdown-level-tag">L1</span>
                         {group.icon}
                         <div>
                           <h4>{group.title}</h4>
@@ -666,9 +665,8 @@ function App() {
                     </div>
                     <div className="breakdown-table">
                       {group.items.length > 0 ? (
-                        group.items.map((item, itemIndex) => (
+                        group.items.map((item) => (
                           <div className="breakdown-row" key={item.id}>
-                            <span className="breakdown-row-marker">L2.{itemIndex + 1}</span>
                             <div className="breakdown-copy">
                               <div className="breakdown-label-row">
                                 <strong>{item.label}</strong>
