@@ -1,4 +1,5 @@
 import { database, getHospital } from "./data";
+import { getBabyScreeningReference } from "./screeningReferences";
 import type {
   BreakdownItem,
   CalculatorInput,
@@ -17,6 +18,7 @@ const addBand = (a: EstimateBand, b: EstimateBand): EstimateBand => ({
   high: a.high + b.high
 });
 const roundMoney = (value: number) => Math.round(value / 10) * 10;
+const moneyLike = (value: number) => `HK$${Math.round(value).toLocaleString("en-US")}`;
 
 function isEmergencyCSection(input: CalculatorInput) {
   return input.delivery === "direct_emergency" || input.delivery === "after_labor";
@@ -642,18 +644,38 @@ export function calculateEstimate(input: CalculatorInput): CalculatorResult {
     });
   }
 
-  if (input.babyScreeningFee > 0) {
+  const babyScreeningReference = getBabyScreeningReference(input.babyScreeningPlanId);
+  babyScreeningReference.sourceUrls.forEach((url) => sourceUrls.add(url));
+  if (input.babyScreeningPlanId !== "none" || input.babyScreeningFee > 0) {
     const amount = input.babyScreeningFee * input.babyCount;
     const screeningBand = { low: amount, base: amount, high: amount };
+    const isUserOverride =
+      input.babyScreeningPlanId === "manual" ||
+      (babyScreeningReference.feePerBaby !== input.babyScreeningFee && input.babyScreeningFee > 0);
     breakdown.push({
       id: "baby-extra-screening",
       label: "額外代謝病篩查／BB化驗",
-      detail: `${input.babyCount} 名BB · 按輸入金額`,
+      detail:
+        amount > 0
+          ? `${isUserOverride ? "按輸入金額" : babyScreeningReference.shortLabel} · ${
+              input.babyCount
+            } 名BB × ${moneyLike(
+              input.babyScreeningFee
+            )}`
+          : `${babyScreeningReference.shortLabel} · ${babyScreeningReference.detail}`,
       ...screeningBand,
       kind: "baby",
-      source: "user"
+      source: isUserOverride || babyScreeningReference.sourceType === "user"
+        ? "user"
+        : babyScreeningReference.source
     });
     babySubtotal = addBand(babySubtotal, screeningBand);
+    if (input.babyScreeningPlanId === "hkbgi-nova" && input.babyScreeningFee === 0) {
+      warnings.push("華大NOVA代謝疾病篩查未見公開價目，已列作參考但未計入金額。");
+    }
+    if (input.babyScreeningPlanId === "cuhk-private") {
+      warnings.push("中大新生兒代謝病篩查目前使用網上二級價格參考，實際收費請以醫院或化驗所為準。");
+    }
   }
 
   const professional = getProfessional(input, selected);

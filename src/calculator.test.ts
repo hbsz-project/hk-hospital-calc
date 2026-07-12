@@ -14,6 +14,7 @@ const baseInput: CalculatorInput = {
   extraBabyNights: 0,
   epidural: false,
   instrumentalDelivery: false,
+  babyScreeningPlanId: "none",
   babyScreeningFee: 0,
   professionalSurchargePercent: 50,
   professionalQuote: {}
@@ -111,6 +112,7 @@ describe("maternity cost calculator", () => {
   it("places paediatric rounds and extra screening in the BB subtotal", () => {
     const result = calculateEstimate({
       ...baseInput,
+      babyScreeningPlanId: "manual",
       babyScreeningFee: 2500
     });
 
@@ -119,6 +121,45 @@ describe("maternity cost calculator", () => {
       "baby"
     );
     expect(result.breakdown.find((item) => item.id === "baby-extra-screening")?.base).toBe(2500);
+  });
+
+  it("keeps the government newborn screening reference at zero cost", () => {
+    const result = calculateEstimate({
+      ...baseInput,
+      babyScreeningPlanId: "ha-private-pilot"
+    });
+    const screening = result.breakdown.find((item) => item.id === "baby-extra-screening");
+
+    expect(screening?.base).toBe(0);
+    expect(screening?.source).toBe("verified");
+    expect(result.babySubtotal.base).toBe(10000);
+    expect(result.sourceUrls.some((url) => url.includes("info.gov.hk"))).toBe(true);
+  });
+
+  it("adds the CUHK secondary screening reference to the BB subtotal", () => {
+    const result = calculateEstimate({
+      ...baseInput,
+      babyScreeningPlanId: "cuhk-private",
+      babyScreeningFee: 1300
+    });
+    const screening = result.breakdown.find((item) => item.id === "baby-extra-screening");
+
+    expect(screening?.base).toBe(1300);
+    expect(screening?.source).toBe("secondary");
+    expect(result.babySubtotal.base).toBe(11300);
+  });
+
+  it("shows HKBGI NOVA as an unpriced reference without changing the total", () => {
+    const result = calculateEstimate({
+      ...baseInput,
+      babyScreeningPlanId: "hkbgi-nova"
+    });
+    const screening = result.breakdown.find((item) => item.id === "baby-extra-screening");
+
+    expect(screening?.base).toBe(0);
+    expect(screening?.source).toBe("secondary");
+    expect(result.babySubtotal.base).toBe(10000);
+    expect(result.warnings.some((warning) => warning.includes("華大NOVA"))).toBe(true);
   });
 
   it("defaults to a 50% obstetrician and anaesthetist surcharge for off-hours", () => {

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   AlertTriangle,
   Baby,
@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { calculateEstimate, selectPackage } from "./calculator";
 import { database, getRooms, hasPackageMode, hospitals } from "./data";
+import { babyScreeningReferences, getBabyScreeningReference } from "./screeningReferences";
 import type {
   CalculatorInput,
   DeliveryScenario,
@@ -28,6 +29,7 @@ import type {
   ProfessionalQuote,
   TimingScenario
 } from "./types";
+import { trackEvent } from "./analytics";
 
 const money = new Intl.NumberFormat("zh-HK", {
   style: "currency",
@@ -167,6 +169,7 @@ function PercentageInput({
 }
 
 function App() {
+  const hasInteracted = useRef(false);
   const [input, setInput] = useState<CalculatorInput>({
     hospitalId: "UH",
     room: getRooms("UH")[0],
@@ -179,6 +182,7 @@ function App() {
     extraBabyNights: 0,
     epidural: false,
     instrumentalDelivery: false,
+    babyScreeningPlanId: "none",
     babyScreeningFee: 0,
     professionalSurchargePercent: 50,
     professionalQuote: {}
@@ -187,6 +191,7 @@ function App() {
   const rooms = useMemo(() => getRooms(input.hospitalId), [input.hospitalId]);
   const result = useMemo(() => calculateEstimate(input), [input]);
   const hospital = hospitals.find((item) => item.id === input.hospitalId);
+  const selectedBabyScreening = getBabyScreeningReference(input.babyScreeningPlanId);
   const breakdownGroups = useMemo(() => {
     const byKind = (kind: BreakdownItem["kind"]) =>
       result.breakdown.filter((item) => item.kind === kind);
@@ -255,11 +260,38 @@ function App() {
     input.babyCount
   ]);
 
+  useEffect(() => {
+    if (!hasInteracted.current) return;
+
+    const timer = window.setTimeout(() => {
+      trackEvent("estimate_updated", {
+        hospital_id: input.hospitalId,
+        delivery_type: input.delivery,
+        timing: input.timing,
+        package_mode: input.packageMode,
+        baby_count: input.babyCount,
+        has_professional_quote:
+          Object.values(input.professionalQuote).some((value) => value !== undefined)
+      });
+    }, 800);
+
+    return () => window.clearTimeout(timer);
+  }, [input]);
+
+  const markInteraction = () => {
+    if (hasInteracted.current) return;
+    hasInteracted.current = true;
+    trackEvent("calculator_started");
+  };
+
   const update = <K extends keyof CalculatorInput>(key: K, value: CalculatorInput[K]) => {
+    markInteraction();
     setInput((current) => ({ ...current, [key]: value }));
   };
 
   const chooseHospital = (hospitalId: string) => {
+    markInteraction();
+    trackEvent("hospital_selected", { hospital_id: hospitalId });
     const firstRoom = getRooms(hospitalId)[0];
     const packageMode: PackageMode = hasPackageMode(hospitalId, "hospital")
       ? "hospital"
@@ -276,9 +308,20 @@ function App() {
   };
 
   const updateQuote = (key: keyof ProfessionalQuote, value: number | undefined) => {
+    markInteraction();
     setInput((current) => ({
       ...current,
       professionalQuote: { ...current.professionalQuote, [key]: value }
+    }));
+  };
+
+  const chooseBabyScreening = (planId: string) => {
+    markInteraction();
+    const reference = getBabyScreeningReference(planId);
+    setInput((current) => ({
+      ...current,
+      babyScreeningPlanId: reference.id,
+      babyScreeningFee: reference.feePerBaby ?? 0
     }));
   };
 
@@ -333,7 +376,14 @@ function App() {
               <span className={`status-dot ${hospital.confidence}`} />
               <span>資料完整度 {hospital.completeness}%</span>
               <span>院方版本 {hospital.version}</span>
-              <a href={hospital.officialUrl} target="_blank" rel="noreferrer">
+              <a
+                href={hospital.officialUrl}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() =>
+                  trackEvent("official_site_clicked", { hospital_id: input.hospitalId })
+                }
+              >
                 官網 <ExternalLink size={13} />
               </a>
             </div>
@@ -409,15 +459,17 @@ function App() {
                   key={option.value}
                   type="button"
                   className={input.delivery === option.value ? "selected" : ""}
-                  onClick={() =>
+                  onClick={() => {
+                    markInteraction();
+                    trackEvent("delivery_type_selected", { delivery_type: option.value });
                     setInput((current) => ({
                       ...current,
                       delivery: option.value,
                       timing: "standard",
                       epidural: false,
                       instrumentalDelivery: false
-                    }))
-                  }
+                    }));
+                  }}
                 >
                   <span>{option.label}</span>
                   <small>{option.hint}</small>
@@ -555,20 +607,52 @@ function App() {
           </div>
 
           <div className="baby-screening-field">
+            <div className="screening-reference-grid">
+              {babyScreeningReferences.map((reference) => (
+                <button
+                  key={reference.id}
+                  type="button"
+                  className={input.babyScreeningPlanId === reference.id ? "selected" : ""}
+                  onClick={() => chooseBabyScreening(reference.id)}
+                >
+                  <span>{reference.shortLabel}</span>
+                  <strong>
+                    {reference.feePerBaby === null ? "輸入報價" : money.format(reference.feePerBaby)}
+                  </strong>
+                </button>
+              ))}
+            </div>
             <CurrencyInput
               label="額外代謝病篩查／其他BB化驗費（每名BB）"
               placeholder="如有帳單金額才輸入"
               value={input.babyScreeningFee || undefined}
-              onChange={(value) => update("babyScreeningFee", value ?? 0)}
+              onChange={(value) =>
+                setInput((current) => ({
+                  ...current,
+                  babyScreeningPlanId:
+                    current.babyScreeningPlanId === "none" ? "manual" : current.babyScreeningPlanId,
+                  babyScreeningFee: value ?? 0
+                }))
+              }
               suffix="/ BB"
             />
+            <div className="screening-reference-note">
+              <strong>{selectedBabyScreening.label}</strong>
+              <span>{selectedBabyScreening.detail}</span>
+              <small>{selectedBabyScreening.note}</small>
+            </div>
             {input.hospitalId === "UH" && (
               <small>仁安套餐已包括 G6PD、TSH、血型及聽力篩查；此欄只填其他額外化驗。</small>
             )}
           </div>
 
           {!result.selectedPackage?.professionalIncluded && (
-            <details className="quote-panel">
+            <details
+              className="quote-panel"
+              onToggle={(event) => {
+                if (event.currentTarget.open) trackEvent("quote_panel_opened");
+              }}
+            >
               <summary>
                 <span>
                   <Stethoscope size={18} />
@@ -721,7 +805,13 @@ function App() {
                 </summary>
                 <div>
                   {result.cases.map((item) => (
-                    <a href={item.sourceUrl} target="_blank" rel="noreferrer" key={item.id}>
+                    <a
+                      href={item.sourceUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      key={item.id}
+                      onClick={() => trackEvent("reference_case_clicked")}
+                    >
                       <span>
                         {item.year} · {item.room}
                       </span>
@@ -743,7 +833,15 @@ function App() {
               </div>
               <div className="source-links">
                 {result.sourceUrls.map((url, index) => (
-                  <a key={url} href={url} target="_blank" rel="noreferrer">
+                  <a
+                    key={url}
+                    href={url}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() =>
+                      trackEvent("data_source_clicked", { hospital_id: input.hospitalId })
+                    }
+                  >
                     來源 {index + 1}
                     <ExternalLink size={13} />
                   </a>
@@ -764,7 +862,12 @@ function App() {
               <p>
                 如果你願意分享已遮名帳單或實際收費，可提交匿名資料作人工審核。提交前請先遮去姓名、身份證、病人編號、地址、電話及付款資料。
               </p>
-              <a href={feedbackFormUrl} target="_blank" rel="noreferrer">
+              <a
+                href={feedbackFormUrl}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => trackEvent("feedback_clicked")}
+              >
                 提交實際收費資料
                 <ExternalLink size={13} />
               </a>

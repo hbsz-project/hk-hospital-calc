@@ -583,6 +583,67 @@ a {
   margin-top: 22px;
 }
 
+.screening-reference-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.screening-reference-grid button {
+  display: grid;
+  min-width: 0;
+  min-height: 54px;
+  align-content: center;
+  gap: 3px;
+  padding: 8px 9px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: white;
+  color: var(--ink);
+  text-align: left;
+}
+
+.screening-reference-grid button.selected {
+  border-color: var(--teal);
+  background: var(--teal-soft);
+  box-shadow: inset 3px 0 0 var(--teal);
+}
+
+.screening-reference-grid span {
+  overflow-wrap: anywhere;
+  color: #34423e;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.screening-reference-grid strong {
+  overflow-wrap: anywhere;
+  color: var(--teal-dark);
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.screening-reference-note {
+  display: grid;
+  gap: 3px;
+  padding: 10px 12px;
+  border-left: 3px solid var(--teal);
+  background: rgba(13, 107, 91, 0.06);
+}
+
+.screening-reference-note strong {
+  color: var(--teal-dark);
+  font-size: 11px;
+}
+
+.screening-reference-note span,
+.screening-reference-note small {
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.55;
+}
+
 .baby-screening-field > small {
   color: var(--muted);
   font-size: 9px;
@@ -1188,7 +1249,8 @@ footer {
   .option-grid,
   .dual-steppers,
   .natural-options,
-  .quote-grid {
+  .quote-grid,
+  .screening-reference-grid {
     grid-template-columns: 1fr;
   }
 

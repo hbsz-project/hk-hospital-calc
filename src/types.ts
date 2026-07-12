@@ -112,6 +112,20 @@ export interface PublicCase {
   note: string;
 }
 
+export type BabyScreeningSource = "verified" | "secondary" | "user";
+
+export interface BabyScreeningReference {
+  id: string;
+  label: string;
+  shortLabel: string;
+  feePerBaby: number | null;
+  source: "verified" | "estimate" | "user" | "secondary";
+  sourceType: BabyScreeningSource;
+  detail: string;
+  note: string;
+  sourceUrls: string[];
+}
+
 export interface CalculatorDatabase {
   release: {
     version: string;
@@ -155,6 +169,7 @@ export interface CalculatorInput {
   extraBabyNights: number;
   epidural: boolean;
   instrumentalDelivery: boolean;
+  babyScreeningPlanId: string;
   babyScreeningFee: number;
   professionalSurchargePercent: number;
   professionalQuote: ProfessionalQuote;
