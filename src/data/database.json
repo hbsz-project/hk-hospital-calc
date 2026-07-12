@@ -134,7 +134,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 26000,
       "roomIncluded": false,
@@ -148,7 +147,10 @@
       "sourceUrl": "https://www.union.org/appassets/Pamphlets/Maternity-Services/maternity_pkg_eng.pdf?v=1764562695",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "指定時辰、非預約或非辦公時間另見Surcharges。"
+      "note": "指定時辰、非預約或非辦公時間另見Surcharges。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 5
     },
     {
       "id": "UH-P002",
@@ -157,7 +159,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 35000,
       "roomIncluded": false,
@@ -171,7 +172,10 @@
       "sourceUrl": "https://www.union.org/appassets/Pamphlets/Maternity-Services/maternity_pkg_eng.pdf?v=1764562695",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "仍須預留第二名嬰兒兒科巡房、檢查、育嬰及治療費。"
+      "note": "仍須預留第二名嬰兒兒科巡房、檢查、育嬰及治療費。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 5
     },
     {
       "id": "UH-P003",
@@ -180,7 +184,6 @@
       "delivery": "after_labor",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 33500,
       "roomIncluded": false,
@@ -194,7 +197,10 @@
       "sourceUrl": "https://www.union.org/appassets/Pamphlets/Maternity-Services/maternity_pkg_eng.pdf?v=1764562695",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "婦產科醫生本身的緊急手術加費須獨立報價。"
+      "note": "婦產科醫生本身的緊急手術加費須獨立報價。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 5
     },
     {
       "id": "UH-P004",
@@ -203,7 +209,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 30500,
       "roomIncluded": false,
@@ -217,7 +222,10 @@
       "sourceUrl": "https://www.union.org/appassets/Pamphlets/Maternity-Services/maternity_pkg_eng.pdf?v=1764562695",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "醫生及麻醉師房型加幅未由院方統一公開。"
+      "note": "醫生及麻醉師房型加幅未由院方統一公開。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 5
     },
     {
       "id": "UH-P005",
@@ -226,7 +234,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 41000,
       "roomIncluded": false,
@@ -240,7 +247,10 @@
       "sourceUrl": "https://www.union.org/appassets/Pamphlets/Maternity-Services/maternity_pkg_eng.pdf?v=1764562695",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "雙胞胎BB相關專業及護理費要按兩名嬰兒預留。"
+      "note": "雙胞胎BB相關專業及護理費要按兩名嬰兒預留。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 5
     },
     {
       "id": "UH-P006",
@@ -249,7 +259,6 @@
       "delivery": "after_labor",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 39500,
       "roomIncluded": false,
@@ -263,7 +272,10 @@
       "sourceUrl": "https://www.union.org/appassets/Pamphlets/Maternity-Services/maternity_pkg_eng.pdf?v=1764562695",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "院方套餐與醫生緊急收費分開。"
+      "note": "院方套餐與醫生緊急收費分開。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 5
     },
     {
       "id": "UH-P007",
@@ -272,7 +284,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 35000,
       "roomIncluded": false,
@@ -286,7 +297,10 @@
       "sourceUrl": "https://www.union.org/appassets/Pamphlets/Maternity-Services/maternity_pkg_eng.pdf?v=1764562695",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "指定時段附加費按此房型較高。"
+      "note": "指定時段附加費按此房型較高。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 5
     },
     {
       "id": "UH-P008",
@@ -295,7 +309,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 48000,
       "roomIncluded": false,
@@ -309,7 +322,10 @@
       "sourceUrl": "https://www.union.org/appassets/Pamphlets/Maternity-Services/maternity_pkg_eng.pdf?v=1764562695",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "預留兩名嬰兒的兒科、化驗及延住風險。"
+      "note": "預留兩名嬰兒的兒科、化驗及延住風險。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 5
     },
     {
       "id": "UH-P009",
@@ -318,7 +334,6 @@
       "delivery": "after_labor",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 46800,
       "roomIncluded": false,
@@ -332,7 +347,10 @@
       "sourceUrl": "https://www.union.org/appassets/Pamphlets/Maternity-Services/maternity_pkg_eng.pdf?v=1764562695",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "醫生及麻醉師緊急附加須另行輸入。"
+      "note": "醫生及麻醉師緊急附加須另行輸入。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 5
     },
     {
       "id": "UH-P010",
@@ -341,7 +359,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 44800,
       "roomIncluded": false,
@@ -355,7 +372,10 @@
       "sourceUrl": "https://www.union.org/appassets/Pamphlets/Maternity-Services/maternity_pkg_eng.pdf?v=1764562695",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "私家房指定時段附加費最高。"
+      "note": "私家房指定時段附加費最高。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 5
     },
     {
       "id": "UH-P011",
@@ -364,7 +384,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 60500,
       "roomIncluded": false,
@@ -378,7 +397,10 @@
       "sourceUrl": "https://www.union.org/appassets/Pamphlets/Maternity-Services/maternity_pkg_eng.pdf?v=1764562695",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "BB費用不應假設已完全包含。"
+      "note": "BB費用不應假設已完全包含。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 5
     },
     {
       "id": "UH-P012",
@@ -387,7 +409,6 @@
       "delivery": "after_labor",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 58200,
       "roomIncluded": false,
@@ -401,7 +422,10 @@
       "sourceUrl": "https://www.union.org/appassets/Pamphlets/Maternity-Services/maternity_pkg_eng.pdf?v=1764562695",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "院方與醫生緊急費分別處理。"
+      "note": "院方與醫生緊急費分別處理。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 5
     },
     {
       "id": "SPH-P013",
@@ -410,7 +434,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 26800,
       "roomIncluded": null,
@@ -424,7 +447,10 @@
       "sourceUrl": "https://www.stpaul.org.hk/tc/charges/detail/obstetrics-gynaecology-department",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "指定時段及不足24小時預約另有附加費。"
+      "note": "指定時段及不足24小時預約另有附加費。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "SPH-P014",
@@ -433,7 +459,6 @@
       "delivery": "after_labor",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 35000,
       "roomIncluded": null,
@@ -447,7 +472,10 @@
       "sourceUrl": "https://www.stpaul.org.hk/tc/charges/detail/obstetrics-gynaecology-department",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "醫生緊急手術費仍需獨立報價。"
+      "note": "醫生緊急手術費仍需獨立報價。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "SPH-P015",
@@ -456,7 +484,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 33800,
       "roomIncluded": null,
@@ -470,7 +497,10 @@
       "sourceUrl": "https://www.stpaul.org.hk/tc/charges/detail/obstetrics-gynaecology-department",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "醫生房型加幅並非由此院方雜項級別自動推算。"
+      "note": "醫生房型加幅並非由此院方雜項級別自動推算。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "SPH-P016",
@@ -479,7 +509,6 @@
       "delivery": "after_labor",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 47000,
       "roomIncluded": null,
@@ -493,7 +522,10 @@
       "sourceUrl": "https://www.stpaul.org.hk/tc/charges/detail/obstetrics-gynaecology-department",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "另需考慮醫生、麻醉師及兒科醫生緊急時段收費。"
+      "note": "另需考慮醫生、麻醉師及兒科醫生緊急時段收費。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "SPH-P017",
@@ -502,7 +534,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 48000,
       "roomIncluded": null,
@@ -516,7 +547,10 @@
       "sourceUrl": "https://www.stpaul.org.hk/tc/charges/detail/obstetrics-gynaecology-department",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "時段三指定剖腹附加費可高於基本套餐。"
+      "note": "時段三指定剖腹附加費可高於基本套餐。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "SPH-P018",
@@ -525,7 +559,6 @@
       "delivery": "after_labor",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 68000,
       "roomIncluded": null,
@@ -539,7 +572,10 @@
       "sourceUrl": "https://www.stpaul.org.hk/tc/charges/detail/obstetrics-gynaecology-department",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "專業費用及額外護理仍需另計。"
+      "note": "專業費用及額外護理仍需另計。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "HKBH-P019",
@@ -548,7 +584,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 4,
       "stayLabel": "4日3夜",
       "price": 28000,
       "roomIncluded": true,
@@ -562,7 +597,10 @@
       "sourceUrl": "https://www.hkbh.org.hk/wp-content/uploads/2026/01/031-maternity-unit-2026-01-15.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "緊急、擇時辰及非正常時段不在套餐，金額須查詢。"
+      "note": "緊急、擇時辰及非正常時段不在套餐，金額須查詢。",
+      "packageDays": 4,
+      "packageNights": 3,
+      "roomChargeUnits": 0
     },
     {
       "id": "HKBH-P020",
@@ -571,7 +609,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 4,
       "stayLabel": "4日3夜",
       "price": 39800,
       "roomIncluded": true,
@@ -585,7 +622,10 @@
       "sourceUrl": "https://www.hkbh.org.hk/wp-content/uploads/2026/01/031-maternity-unit-2026-01-15.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "醫生及麻醉師房型加幅須直接問主診醫生。"
+      "note": "醫生及麻醉師房型加幅須直接問主診醫生。",
+      "packageDays": 4,
+      "packageNights": 3,
+      "roomChargeUnits": 0
     },
     {
       "id": "HKBH-P021",
@@ -594,7 +634,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 4,
       "stayLabel": "4日3夜",
       "price": 48000,
       "roomIncluded": true,
@@ -608,7 +647,10 @@
       "sourceUrl": "https://www.hkbh.org.hk/wp-content/uploads/2026/01/031-maternity-unit-2026-01-15.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "擇時辰、緊急及假日收費存在但未公開固定金額。"
+      "note": "擇時辰、緊急及假日收費存在但未公開固定金額。",
+      "packageDays": 4,
+      "packageNights": 3,
+      "roomChargeUnits": 0
     },
     {
       "id": "GHK-P022",
@@ -617,7 +659,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 4,
       "stayLabel": "4日3夜",
       "price": 28800,
       "roomIncluded": true,
@@ -631,7 +672,10 @@
       "sourceUrl": "https://gleneagles.hk/media/OBS-Obstetrics-Packages-2026.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "基本手術室例行費及基本麻醉藥物、物品與儀器包含；專業費排除。"
+      "note": "基本手術室例行費及基本麻醉藥物、物品與儀器包含；專業費排除。",
+      "packageDays": 4,
+      "packageNights": 3,
+      "roomChargeUnits": 0
     },
     {
       "id": "GHK-P023",
@@ -640,7 +684,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 4,
       "stayLabel": "4日3夜",
       "price": 34000,
       "roomIncluded": true,
@@ -654,7 +697,10 @@
       "sourceUrl": "https://gleneagles.hk/media/OBS-Obstetrics-Packages-2026.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "套餐包括房租及每日三餐。"
+      "note": "套餐包括房租及每日三餐。",
+      "packageDays": 4,
+      "packageNights": 3,
+      "roomChargeUnits": 0
     },
     {
       "id": "GHK-P024",
@@ -663,7 +709,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 4,
       "stayLabel": "4日3夜",
       "price": 49500,
       "roomIncluded": true,
@@ -677,7 +722,10 @@
       "sourceUrl": "https://gleneagles.hk/media/OBS-Obstetrics-Packages-2026.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "專業費排除。"
+      "note": "專業費排除。",
+      "packageDays": 4,
+      "packageNights": 3,
+      "roomChargeUnits": 0
     },
     {
       "id": "GHK-P025",
@@ -686,7 +734,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 4,
       "stayLabel": "4日3夜",
       "price": 57700,
       "roomIncluded": true,
@@ -700,7 +747,10 @@
       "sourceUrl": "https://gleneagles.hk/media/OBS-Obstetrics-Packages-2026.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "專業費排除。"
+      "note": "專業費排除。",
+      "packageDays": 4,
+      "packageNights": 3,
+      "roomChargeUnits": 0
     },
     {
       "id": "GHK-P026",
@@ -709,7 +759,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 33300,
       "roomIncluded": true,
@@ -723,7 +772,10 @@
       "sourceUrl": "https://gleneagles.hk/media/OBS-Obstetrics-Packages-2026.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "專業費排除。"
+      "note": "專業費排除。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "GHK-P027",
@@ -732,7 +784,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 42800,
       "roomIncluded": true,
@@ -746,7 +797,10 @@
       "sourceUrl": "https://gleneagles.hk/media/OBS-Obstetrics-Packages-2026.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "專業費排除。"
+      "note": "專業費排除。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "GHK-P028",
@@ -755,7 +809,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 59300,
       "roomIncluded": true,
@@ -769,7 +822,10 @@
       "sourceUrl": "https://gleneagles.hk/media/OBS-Obstetrics-Packages-2026.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "專業費排除。"
+      "note": "專業費排除。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "GHK-P029",
@@ -778,7 +834,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 73800,
       "roomIncluded": true,
@@ -792,7 +847,10 @@
       "sourceUrl": "https://gleneagles.hk/media/OBS-Obstetrics-Packages-2026.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "專業費排除。"
+      "note": "專業費排除。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "GHK-P030",
@@ -801,7 +859,6 @@
       "delivery": "direct_emergency",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": null,
       "stayLabel": "套餐日數按院方條款",
       "price": 42300,
       "roomIncluded": true,
@@ -815,7 +872,10 @@
       "sourceUrl": "https://gleneagles.hk/media/OBS-Obstetrics-Packages-2026.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "少於6小時前預約，且未使用產房服務。"
+      "note": "少於6小時前預約，且未使用產房服務。",
+      "packageDays": null,
+      "packageNights": null,
+      "roomChargeUnits": 0
     },
     {
       "id": "GHK-P031",
@@ -824,7 +884,6 @@
       "delivery": "direct_emergency",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": null,
       "stayLabel": "套餐日數按院方條款",
       "price": 54800,
       "roomIncluded": true,
@@ -838,7 +897,10 @@
       "sourceUrl": "https://gleneagles.hk/media/OBS-Obstetrics-Packages-2026.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "少於6小時前預約，且未使用產房服務。"
+      "note": "少於6小時前預約，且未使用產房服務。",
+      "packageDays": null,
+      "packageNights": null,
+      "roomChargeUnits": 0
     },
     {
       "id": "GHK-P032",
@@ -847,7 +909,6 @@
       "delivery": "direct_emergency",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": null,
       "stayLabel": "套餐日數按院方條款",
       "price": 74300,
       "roomIncluded": true,
@@ -861,7 +922,10 @@
       "sourceUrl": "https://gleneagles.hk/media/OBS-Obstetrics-Packages-2026.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "少於6小時前預約，且未使用產房服務。"
+      "note": "少於6小時前預約，且未使用產房服務。",
+      "packageDays": null,
+      "packageNights": null,
+      "roomChargeUnits": 0
     },
     {
       "id": "GHK-P033",
@@ -870,7 +934,6 @@
       "delivery": "direct_emergency",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": null,
       "stayLabel": "套餐日數按院方條款",
       "price": 93800,
       "roomIncluded": true,
@@ -884,7 +947,10 @@
       "sourceUrl": "https://gleneagles.hk/media/OBS-Obstetrics-Packages-2026.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "少於6小時前預約，且未使用產房服務。"
+      "note": "少於6小時前預約，且未使用產房服務。",
+      "packageDays": null,
+      "packageNights": null,
+      "roomChargeUnits": 0
     },
     {
       "id": "GHK-P034",
@@ -893,7 +959,6 @@
       "delivery": "after_labor",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": null,
       "stayLabel": "套餐日數按院方條款",
       "price": 52300,
       "roomIncluded": true,
@@ -907,7 +972,10 @@
       "sourceUrl": "https://gleneagles.hk/media/OBS-Obstetrics-Packages-2026.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "試產無效並已使用產房服務。"
+      "note": "試產無效並已使用產房服務。",
+      "packageDays": null,
+      "packageNights": null,
+      "roomChargeUnits": 0
     },
     {
       "id": "GHK-P035",
@@ -916,7 +984,6 @@
       "delivery": "after_labor",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": null,
       "stayLabel": "套餐日數按院方條款",
       "price": 64800,
       "roomIncluded": true,
@@ -930,7 +997,10 @@
       "sourceUrl": "https://gleneagles.hk/media/OBS-Obstetrics-Packages-2026.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "試產無效並已使用產房服務。"
+      "note": "試產無效並已使用產房服務。",
+      "packageDays": null,
+      "packageNights": null,
+      "roomChargeUnits": 0
     },
     {
       "id": "GHK-P036",
@@ -939,7 +1009,6 @@
       "delivery": "after_labor",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": null,
       "stayLabel": "套餐日數按院方條款",
       "price": 87300,
       "roomIncluded": true,
@@ -953,7 +1022,10 @@
       "sourceUrl": "https://gleneagles.hk/media/OBS-Obstetrics-Packages-2026.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "試產無效並已使用產房服務。"
+      "note": "試產無效並已使用產房服務。",
+      "packageDays": null,
+      "packageNights": null,
+      "roomChargeUnits": 0
     },
     {
       "id": "GHK-P037",
@@ -962,7 +1034,6 @@
       "delivery": "after_labor",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": null,
       "stayLabel": "套餐日數按院方條款",
       "price": 106800,
       "roomIncluded": true,
@@ -976,7 +1047,10 @@
       "sourceUrl": "https://gleneagles.hk/media/OBS-Obstetrics-Packages-2026.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "試產無效並已使用產房服務。"
+      "note": "試產無效並已使用產房服務。",
+      "packageDays": null,
+      "packageNights": null,
+      "roomChargeUnits": 0
     },
     {
       "id": "CUHKMC-P038",
@@ -985,7 +1059,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 31000,
       "roomIncluded": true,
@@ -999,7 +1072,10 @@
       "sourceUrl": "https://www.cuhkmc.hk/f/page/2881/23715/Obstetric%20Plan%20%E5%AE%89%E6%82%85%E5%88%86%E5%A8%A9%E8%A8%88%E5%8A%83%2001072025.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "基本手術室常規收費包括麻醉、所需用品及儀器；所有醫生專業費另計。"
+      "note": "基本手術室常規收費包括麻醉、所需用品及儀器；所有醫生專業費另計。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "CUHKMC-P039",
@@ -1008,7 +1084,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 49800,
       "roomIncluded": true,
@@ -1022,7 +1097,10 @@
       "sourceUrl": "https://www.cuhkmc.hk/f/page/2881/23715/Obstetric%20Plan%20%E5%AE%89%E6%82%85%E5%88%86%E5%A8%A9%E8%A8%88%E5%8A%83%2001072025.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "基本手術室常規收費包括麻醉、所需用品及儀器；所有醫生專業費另計。"
+      "note": "基本手術室常規收費包括麻醉、所需用品及儀器；所有醫生專業費另計。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "CUHKMC-P040",
@@ -1031,7 +1109,6 @@
       "delivery": "after_labor",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 39500,
       "roomIncluded": true,
@@ -1045,7 +1122,10 @@
       "sourceUrl": "https://www.cuhkmc.hk/f/page/2881/23715/Obstetric%20Plan%20%E5%AE%89%E6%82%85%E5%88%86%E5%A8%A9%E8%A8%88%E5%8A%83%2001072025.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "官方列為Emergency Caesarean Section with use of delivery suite。"
+      "note": "官方列為Emergency Caesarean Section with use of delivery suite。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "CUHKMC-P041",
@@ -1054,7 +1134,6 @@
       "delivery": "after_labor",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 59800,
       "roomIncluded": true,
@@ -1068,7 +1147,10 @@
       "sourceUrl": "https://www.cuhkmc.hk/f/page/2881/23715/Obstetric%20Plan%20%E5%AE%89%E6%82%85%E5%88%86%E5%A8%A9%E8%A8%88%E5%8A%83%2001072025.pdf",
       "dataStatus": "官方已核實",
       "lastVerified": "2026-07-10",
-      "note": "官方列為Emergency Caesarean Section with use of delivery suite。"
+      "note": "官方列為Emergency Caesarean Section with use of delivery suite。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P042",
@@ -1077,7 +1159,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "total_care",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 108600,
       "roomIncluded": true,
@@ -1091,7 +1172,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Total Care Package",
       "lastVerified": "2026-07-10",
-      "note": "Total Care包括指定醫生費、護理、房間及指定治療；不可再加入相同醫生費。"
+      "note": "Total Care包括指定醫生費、護理、房間及指定治療；不可再加入相同醫生費。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P043",
@@ -1100,7 +1184,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "total_care",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 131600,
       "roomIncluded": true,
@@ -1114,7 +1197,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Total Care Package",
       "lastVerified": "2026-07-10",
-      "note": "Total Care包括指定醫生費、護理、房間及指定治療；不可再加入相同醫生費。"
+      "note": "Total Care包括指定醫生費、護理、房間及指定治療；不可再加入相同醫生費。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P044",
@@ -1123,7 +1209,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "total_care",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 162000,
       "roomIncluded": true,
@@ -1137,7 +1222,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Total Care Package",
       "lastVerified": "2026-07-10",
-      "note": "Total Care包括指定醫生費、護理、房間及指定治療；不可再加入相同醫生費。"
+      "note": "Total Care包括指定醫生費、護理、房間及指定治療；不可再加入相同醫生費。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P045",
@@ -1146,7 +1234,6 @@
       "delivery": "elective",
       "timing": "off_hours",
       "packageMode": "total_care",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 120700,
       "roomIncluded": true,
@@ -1160,7 +1247,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Total Care Package",
       "lastVerified": "2026-07-10",
-      "note": "完整假日／風球Total Care情境價；不可再加相同院方或專業時段附加。"
+      "note": "完整假日／風球Total Care情境價；不可再加相同院方或專業時段附加。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P046",
@@ -1169,7 +1259,6 @@
       "delivery": "elective",
       "timing": "off_hours",
       "packageMode": "total_care",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 152200,
       "roomIncluded": true,
@@ -1183,7 +1272,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Total Care Package",
       "lastVerified": "2026-07-10",
-      "note": "完整假日／風球Total Care情境價；不可再加相同院方或專業時段附加。"
+      "note": "完整假日／風球Total Care情境價；不可再加相同院方或專業時段附加。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P047",
@@ -1192,7 +1284,6 @@
       "delivery": "elective",
       "timing": "off_hours",
       "packageMode": "total_care",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 185700,
       "roomIncluded": true,
@@ -1206,7 +1297,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Total Care Package",
       "lastVerified": "2026-07-10",
-      "note": "完整假日／風球Total Care情境價；不可再加相同院方或專業時段附加。"
+      "note": "完整假日／風球Total Care情境價；不可再加相同院方或專業時段附加。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P048",
@@ -1215,7 +1309,6 @@
       "delivery": "elective",
       "timing": "specified",
       "packageMode": "total_care",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 137800,
       "roomIncluded": true,
@@ -1229,7 +1322,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Total Care Package",
       "lastVerified": "2026-07-10",
-      "note": "完整指定吉時Total Care情境價；不可再加相同指定時辰附加。"
+      "note": "完整指定吉時Total Care情境價；不可再加相同指定時辰附加。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P049",
@@ -1238,7 +1334,6 @@
       "delivery": "elective",
       "timing": "specified",
       "packageMode": "total_care",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 182400,
       "roomIncluded": true,
@@ -1252,7 +1347,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Total Care Package",
       "lastVerified": "2026-07-10",
-      "note": "完整指定吉時Total Care情境價；不可再加相同指定時辰附加。"
+      "note": "完整指定吉時Total Care情境價；不可再加相同指定時辰附加。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P050",
@@ -1261,7 +1359,6 @@
       "delivery": "elective",
       "timing": "specified",
       "packageMode": "total_care",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 233500,
       "roomIncluded": true,
@@ -1275,7 +1372,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Total Care Package",
       "lastVerified": "2026-07-10",
-      "note": "完整指定吉時Total Care情境價；不可再加相同指定時辰附加。"
+      "note": "完整指定吉時Total Care情境價；不可再加相同指定時辰附加。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P051",
@@ -1284,7 +1384,6 @@
       "delivery": "direct_emergency",
       "timing": "standard",
       "packageMode": "total_care",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 130400,
       "roomIncluded": true,
@@ -1298,7 +1397,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Total Care Package",
       "lastVerified": "2026-07-10",
-      "note": "完整緊急Total Care情境價；不可再加同類緊急附加。"
+      "note": "完整緊急Total Care情境價；不可再加同類緊急附加。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P052",
@@ -1307,7 +1409,6 @@
       "delivery": "direct_emergency",
       "timing": "standard",
       "packageMode": "total_care",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 163200,
       "roomIncluded": true,
@@ -1321,7 +1422,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Total Care Package",
       "lastVerified": "2026-07-10",
-      "note": "完整緊急Total Care情境價；不可再加同類緊急附加。"
+      "note": "完整緊急Total Care情境價；不可再加同類緊急附加。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P053",
@@ -1330,7 +1434,6 @@
       "delivery": "direct_emergency",
       "timing": "standard",
       "packageMode": "total_care",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 211900,
       "roomIncluded": true,
@@ -1344,7 +1447,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Total Care Package",
       "lastVerified": "2026-07-10",
-      "note": "完整緊急Total Care情境價；不可再加同類緊急附加。"
+      "note": "完整緊急Total Care情境價；不可再加同類緊急附加。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "TWAH-P054",
@@ -1353,7 +1459,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 29000,
       "roomIncluded": null,
@@ -1367,7 +1472,10 @@
       "sourceUrl": "https://www.twah.org.hk/en/promotions/new-pricing-for-maternity-services-more-flexibility-with-same-heartfelt-care",
       "dataStatus": "官方價格已核實；包含項目待確認",
       "lastVerified": "2026-07-10",
-      "note": "專業費、時段及多胎規則未於公開價目列明。"
+      "note": "專業費、時段及多胎規則未於公開價目列明。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "TWAH-P055",
@@ -1376,7 +1484,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 46900,
       "roomIncluded": null,
@@ -1390,7 +1497,10 @@
       "sourceUrl": "https://www.twah.org.hk/en/promotions/new-pricing-for-maternity-services-more-flexibility-with-same-heartfelt-care",
       "dataStatus": "官方價格已核實；包含項目待確認",
       "lastVerified": "2026-07-10",
-      "note": "專業費、時段及多胎規則未於公開價目列明。"
+      "note": "專業費、時段及多胎規則未於公開價目列明。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "TWAH-P056",
@@ -1399,7 +1509,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 58900,
       "roomIncluded": null,
@@ -1413,7 +1522,10 @@
       "sourceUrl": "https://www.twah.org.hk/en/promotions/new-pricing-for-maternity-services-more-flexibility-with-same-heartfelt-care",
       "dataStatus": "官方價格已核實；包含項目待確認",
       "lastVerified": "2026-07-10",
-      "note": "專業費、時段及多胎規則未於公開價目列明。"
+      "note": "專業費、時段及多胎規則未於公開價目列明。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "TWAH-P057",
@@ -1422,7 +1534,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 61000,
       "roomIncluded": null,
@@ -1436,7 +1547,10 @@
       "sourceUrl": "https://www.twah.org.hk/en/promotions/new-pricing-for-maternity-services-more-flexibility-with-same-heartfelt-care",
       "dataStatus": "官方價格已核實；包含項目待確認",
       "lastVerified": "2026-07-10",
-      "note": "專業費、時段及多胎規則未於公開價目列明。"
+      "note": "專業費、時段及多胎規則未於公開價目列明。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P058",
@@ -1445,7 +1559,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "hospital",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 34300,
       "roomIncluded": true,
@@ -1459,7 +1572,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Hospital Package",
       "lastVerified": "2026-07-10",
-      "note": "須於6小時前預約；入院時已臨產、穿水或其他健康原因可轉為緊急剖腹。"
+      "note": "須於6小時前預約；入院時已臨產、穿水或其他健康原因可轉為緊急剖腹。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P059",
@@ -1468,7 +1584,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "hospital",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 45100,
       "roomIncluded": true,
@@ -1482,7 +1597,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Hospital Package",
       "lastVerified": "2026-07-10",
-      "note": "須於6小時前預約；入院時已臨產、穿水或其他健康原因可轉為緊急剖腹。"
+      "note": "須於6小時前預約；入院時已臨產、穿水或其他健康原因可轉為緊急剖腹。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P060",
@@ -1491,7 +1609,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "hospital",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 58800,
       "roomIncluded": true,
@@ -1505,7 +1622,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Hospital Package",
       "lastVerified": "2026-07-10",
-      "note": "須於6小時前預約；入院時已臨產、穿水或其他健康原因可轉為緊急剖腹。"
+      "note": "須於6小時前預約；入院時已臨產、穿水或其他健康原因可轉為緊急剖腹。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P061",
@@ -1514,7 +1634,6 @@
       "delivery": "elective",
       "timing": "specified",
       "packageMode": "hospital",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 46400,
       "roomIncluded": true,
@@ -1528,7 +1647,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Hospital Package完整情境價",
       "lastVerified": "2026-07-10",
-      "note": "完整情境套餐價，不再加相同時段院方附加；醫生時段費仍按實際報價。"
+      "note": "完整情境套餐價，不再加相同時段院方附加；醫生時段費仍按實際報價。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P062",
@@ -1537,7 +1659,6 @@
       "delivery": "elective",
       "timing": "specified",
       "packageMode": "hospital",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 65700,
       "roomIncluded": true,
@@ -1551,7 +1672,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Hospital Package完整情境價",
       "lastVerified": "2026-07-10",
-      "note": "完整情境套餐價，不再加相同時段院方附加；醫生時段費仍按實際報價。"
+      "note": "完整情境套餐價，不再加相同時段院方附加；醫生時段費仍按實際報價。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P063",
@@ -1560,7 +1684,6 @@
       "delivery": "elective",
       "timing": "specified",
       "packageMode": "hospital",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 82500,
       "roomIncluded": true,
@@ -1574,7 +1697,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Hospital Package完整情境價",
       "lastVerified": "2026-07-10",
-      "note": "完整情境套餐價，不再加相同時段院方附加；醫生時段費仍按實際報價。"
+      "note": "完整情境套餐價，不再加相同時段院方附加；醫生時段費仍按實際報價。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P064",
@@ -1583,7 +1709,6 @@
       "delivery": "direct_emergency",
       "timing": "standard",
       "packageMode": "hospital",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 41400,
       "roomIncluded": true,
@@ -1596,8 +1721,11 @@
       "sourceType": "official",
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Hospital Package完整情境價",
-      "lastVerified": "完整緊急情境價，不再加入同類院方緊急附加。",
-      "note": null
+      "lastVerified": "2026-07-10",
+      "note": "完整緊急情境價，不再加入同類院方緊急附加。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P065",
@@ -1606,7 +1734,6 @@
       "delivery": "direct_emergency",
       "timing": "standard",
       "packageMode": "hospital",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 48200,
       "roomIncluded": true,
@@ -1620,7 +1747,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Hospital Package完整情境價",
       "lastVerified": "2026-07-10",
-      "note": "完整緊急情境價，不再加入同類院方緊急附加。"
+      "note": "完整緊急情境價，不再加入同類院方緊急附加。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "MIH-P066",
@@ -1629,7 +1759,6 @@
       "delivery": "direct_emergency",
       "timing": "standard",
       "packageMode": "hospital",
-      "stayDays": 5,
       "stayLabel": "4夜",
       "price": 67200,
       "roomIncluded": true,
@@ -1643,7 +1772,10 @@
       "sourceUrl": "https://www.matilda.org/en/fees-and-packages/hospital-packages?section=Maternity",
       "dataStatus": "官方已核實－Hospital Package完整情境價",
       "lastVerified": "2026-07-10",
-      "note": "完整緊急情境價，不再加入同類院方緊急附加。"
+      "note": "完整緊急情境價，不再加入同類院方緊急附加。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "STH-S1",
@@ -1652,7 +1784,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 4,
       "stayLabel": "4日3夜",
       "price": 26300,
       "roomIncluded": true,
@@ -1666,7 +1797,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "可補官方圖片式價目未能解析的缺口；前端必須標示二級來源。"
+      "note": "可補官方圖片式價目未能解析的缺口；前端必須標示二級來源。",
+      "packageDays": 4,
+      "packageNights": 3,
+      "roomChargeUnits": 0
     },
     {
       "id": "STH-S2",
@@ -1675,7 +1809,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 4,
       "stayLabel": "4日3夜",
       "price": 35330,
       "roomIncluded": true,
@@ -1689,7 +1822,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "可補官方圖片式價目未能解析的缺口；前端必須標示二級來源。"
+      "note": "可補官方圖片式價目未能解析的缺口；前端必須標示二級來源。",
+      "packageDays": 4,
+      "packageNights": 3,
+      "roomChargeUnits": 0
     },
     {
       "id": "STH-S3",
@@ -1698,7 +1834,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 4,
       "stayLabel": "4日3夜",
       "price": 29300,
       "roomIncluded": true,
@@ -1712,7 +1847,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "可補官方圖片式價目未能解析的缺口；前端必須標示二級來源。"
+      "note": "可補官方圖片式價目未能解析的缺口；前端必須標示二級來源。",
+      "packageDays": 4,
+      "packageNights": 3,
+      "roomChargeUnits": 0
     },
     {
       "id": "STH-S4",
@@ -1721,7 +1859,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 4,
       "stayLabel": "4日3夜",
       "price": 39380,
       "roomIncluded": true,
@@ -1735,7 +1872,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "可補官方圖片式價目未能解析的缺口；前端必須標示二級來源。"
+      "note": "可補官方圖片式價目未能解析的缺口；前端必須標示二級來源。",
+      "packageDays": 4,
+      "packageNights": 3,
+      "roomChargeUnits": 0
     },
     {
       "id": "STH-S5",
@@ -1744,7 +1884,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 4,
       "stayLabel": "4日3夜",
       "price": 37300,
       "roomIncluded": true,
@@ -1758,7 +1897,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "可補官方圖片式價目未能解析的缺口；前端必須標示二級來源。"
+      "note": "可補官方圖片式價目未能解析的缺口；前端必須標示二級來源。",
+      "packageDays": 4,
+      "packageNights": 3,
+      "roomChargeUnits": 0
     },
     {
       "id": "STH-S6",
@@ -1767,7 +1909,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 4,
       "stayLabel": "4日3夜",
       "price": 50180,
       "roomIncluded": true,
@@ -1781,7 +1922,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "可補官方圖片式價目未能解析的缺口；前端必須標示二級來源。"
+      "note": "可補官方圖片式價目未能解析的缺口；前端必須標示二級來源。",
+      "packageDays": 4,
+      "packageNights": 3,
+      "roomChargeUnits": 0
     },
     {
       "id": "STH-S7",
@@ -1790,7 +1934,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 4,
       "stayLabel": "4日3夜",
       "price": 50300,
       "roomIncluded": true,
@@ -1804,7 +1947,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "可補官方圖片式價目未能解析的缺口；前端必須標示二級來源。"
+      "note": "可補官方圖片式價目未能解析的缺口；前端必須標示二級來源。",
+      "packageDays": 4,
+      "packageNights": 3,
+      "roomChargeUnits": 0
     },
     {
       "id": "STH-S8",
@@ -1813,7 +1959,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 4,
       "stayLabel": "4日3夜",
       "price": 67730,
       "roomIncluded": true,
@@ -1827,7 +1972,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "可補官方圖片式價目未能解析的缺口；前端必須標示二級來源。"
+      "note": "可補官方圖片式價目未能解析的缺口；前端必須標示二級來源。",
+      "packageDays": 4,
+      "packageNights": 3,
+      "roomChargeUnits": 0
     },
     {
       "id": "HKSH-S9",
@@ -1836,7 +1984,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 34600,
       "roomIncluded": true,
@@ -1850,7 +1997,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "養和官方套餐存在但價目以圖片呈現；暫用Bowtie二級來源。"
+      "note": "養和官方套餐存在但價目以圖片呈現；暫用Bowtie二級來源。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "HKSH-S10",
@@ -1859,7 +2009,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 45100,
       "roomIncluded": true,
@@ -1873,7 +2022,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "養和官方套餐存在但價目以圖片呈現；暫用Bowtie二級來源。"
+      "note": "養和官方套餐存在但價目以圖片呈現；暫用Bowtie二級來源。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "HKSH-S11",
@@ -1882,7 +2034,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 66300,
       "roomIncluded": true,
@@ -1896,7 +2047,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "養和官方套餐存在但價目以圖片呈現；暫用Bowtie二級來源。"
+      "note": "養和官方套餐存在但價目以圖片呈現；暫用Bowtie二級來源。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "CH-S12",
@@ -1905,7 +2059,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 29800,
       "roomIncluded": true,
@@ -1919,7 +2072,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "嘉諾撒官方房租已核實；分娩套餐暫用Bowtie二級來源。"
+      "note": "嘉諾撒官方房租已核實；分娩套餐暫用Bowtie二級來源。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "CH-S13",
@@ -1928,7 +2084,6 @@
       "delivery": "direct_emergency",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 35800,
       "roomIncluded": true,
@@ -1942,7 +2097,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "嘉諾撒官方房租已核實；分娩套餐暫用Bowtie二級來源。"
+      "note": "嘉諾撒官方房租已核實；分娩套餐暫用Bowtie二級來源。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "CH-S14",
@@ -1951,7 +2109,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 40000,
       "roomIncluded": true,
@@ -1965,7 +2122,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "嘉諾撒官方房租已核實；分娩套餐暫用Bowtie二級來源。"
+      "note": "嘉諾撒官方房租已核實；分娩套餐暫用Bowtie二級來源。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "CH-S15",
@@ -1974,7 +2134,6 @@
       "delivery": "direct_emergency",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 48500,
       "roomIncluded": true,
@@ -1988,7 +2147,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "嘉諾撒官方房租已核實；分娩套餐暫用Bowtie二級來源。"
+      "note": "嘉諾撒官方房租已核實；分娩套餐暫用Bowtie二級來源。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "CH-S16",
@@ -1997,7 +2159,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 58200,
       "roomIncluded": true,
@@ -2011,7 +2172,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "嘉諾撒官方房租已核實；分娩套餐暫用Bowtie二級來源。"
+      "note": "嘉諾撒官方房租已核實；分娩套餐暫用Bowtie二級來源。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "CH-S17",
@@ -2020,7 +2184,6 @@
       "delivery": "direct_emergency",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 69200,
       "roomIncluded": true,
@@ -2034,7 +2197,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "嘉諾撒官方房租已核實；分娩套餐暫用Bowtie二級來源。"
+      "note": "嘉諾撒官方房租已核實；分娩套餐暫用Bowtie二級來源。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "CH-S18",
@@ -2043,7 +2209,6 @@
       "delivery": "elective",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 99700,
       "roomIncluded": true,
@@ -2057,7 +2222,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "嘉諾撒官方房租已核實；分娩套餐暫用Bowtie二級來源。"
+      "note": "嘉諾撒官方房租已核實；分娩套餐暫用Bowtie二級來源。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     },
     {
       "id": "CH-S19",
@@ -2066,7 +2234,6 @@
       "delivery": "direct_emergency",
       "timing": "standard",
       "packageMode": "standard",
-      "stayDays": 5,
       "stayLabel": "5日4夜",
       "price": 110700,
       "roomIncluded": true,
@@ -2080,7 +2247,10 @@
       "sourceUrl": "https://www.bowtie.com.hk/blog/zh/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2%E7%99%BE%E7%A7%91/%E7%A7%81%E5%AE%B6%E9%86%AB%E9%99%A2-%E7%94%9F%E4%BB%94-%E6%94%B6%E8%B2%BB/",
       "dataStatus": "保險公司2026價格快照",
       "lastVerified": "2026-07-10",
-      "note": "嘉諾撒官方房租已核實；分娩套餐暫用Bowtie二級來源。"
+      "note": "嘉諾撒官方房租已核實；分娩套餐暫用Bowtie二級來源。",
+      "packageDays": 5,
+      "packageNights": 4,
+      "roomChargeUnits": 0
     }
   ],
   "surcharges": [

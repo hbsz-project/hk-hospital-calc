@@ -23,7 +23,11 @@ export interface MaternityPackage {
   delivery: DeliveryScenario;
   timing: TimingScenario;
   packageMode: PackageMode;
-  stayDays: number | null;
+  /** @deprecated Raw imports may still carry stayDays; data.ts normalises it. */
+  stayDays?: number | null;
+  packageDays: number | null;
+  packageNights: number | null;
+  roomChargeUnits: number | null;
   stayLabel: string;
   price: number;
   roomIncluded: boolean | null;
@@ -96,6 +100,17 @@ export interface ProfessionalEstimate {
   note: string;
 }
 
+export interface DataSource {
+  id: string;
+  organization: string;
+  name: string;
+  url: string;
+  effective: string;
+  checked: string;
+  reliability: string;
+  limitation: string;
+}
+
 export interface PublicCase {
   id: string;
   hospitalId: string;
@@ -137,16 +152,7 @@ export interface CalculatorDatabase {
   surcharges: Surcharge[];
   feeItems: FeeItem[];
   professionalEstimates: ProfessionalEstimate[];
-  sources: Array<{
-    id: string;
-    organization: string;
-    name: string;
-    url: string;
-    effective: string;
-    checked: string;
-    reliability: string;
-    limitation: string;
-  }>;
+  sources: DataSource[];
   cases: PublicCase[];
 }
 
@@ -163,7 +169,9 @@ export interface CalculatorInput {
   delivery: DeliveryScenario;
   timing: TimingScenario;
   packageMode: PackageMode;
-  stayDays: number;
+  accommodationDays: number;
+  obstetricianRounds: number;
+  paediatricianRounds: number;
   babyCount: number;
   extraMotherNights: number;
   extraBabyNights: number;
@@ -200,6 +208,11 @@ export interface CalculatorResult {
   confidenceLabel: string;
   largestUncertainty: string;
   selectedPackage: MaternityPackage | null;
+  packageFallbackReason: string | null;
+  packagePrice: number;
+  outsidePackageTotal: number;
+  estimatedBillGap: number;
+  confidenceByGroup: Record<"hospital" | "professional" | "baby", Confidence>;
   cases: PublicCase[];
-  sourceUrls: string[];
+  sources: DataSource[];
 }

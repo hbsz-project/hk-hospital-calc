@@ -7,6 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "test": "vitest run",
+    "data:validate": "node scripts/validate-data.mjs",
+    "data:pull": "node scripts/pull-sheets.mjs",
+    "data:diff": "node scripts/diff-data.mjs",
     "preview": "vite preview",
     "lint": "tsc -b --pretty false"
   },

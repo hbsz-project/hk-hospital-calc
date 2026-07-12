@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { calculateEstimate } from "./calculator";
+import { database } from "./data";
 import type { CalculatorInput } from "./types";
 
 const baseInput: CalculatorInput = {
@@ -8,7 +9,9 @@ const baseInput: CalculatorInput = {
   delivery: "elective",
   timing: "standard",
   packageMode: "standard",
-  stayDays: 5,
+  accommodationDays: 5,
+  obstetricianRounds: 5,
+  paediatricianRounds: 5,
   babyCount: 1,
   extraMotherNights: 0,
   extraBabyNights: 0,
@@ -100,7 +103,9 @@ describe("maternity cost calculator", () => {
     const result = calculateEstimate({
       ...baseInput,
       delivery: "natural",
-      stayDays: 4
+      accommodationDays: 4,
+      obstetricianRounds: 4,
+      paediatricianRounds: 4
     });
 
     expect(result.selectedPackage?.delivery).toBe("natural");
@@ -133,7 +138,7 @@ describe("maternity cost calculator", () => {
     expect(screening?.base).toBe(0);
     expect(screening?.source).toBe("verified");
     expect(result.babySubtotal.base).toBe(10000);
-    expect(result.sourceUrls.some((url) => url.includes("info.gov.hk"))).toBe(true);
+    expect(result.sources.some((source) => source.url.includes("info.gov.hk"))).toBe(true);
   });
 
   it("adds the CUHK secondary screening reference to the BB subtotal", () => {
@@ -218,5 +223,65 @@ describe("maternity cost calculator", () => {
     expect(
       result.breakdown.some((item) => item.id === "professional-extra-surcharge")
     ).toBe(false);
+  });
+
+  it("intentionally exposes one central estimate in low, base and high", () => {
+    const result = calculateEstimate(baseInput);
+    expect(result.low).toBe(result.base);
+    expect(result.high).toBe(result.base);
+  });
+
+  it("keeps accommodation and both round counts independent", () => {
+    const result = calculateEstimate({
+      ...baseInput,
+      accommodationDays: 7,
+      obstetricianRounds: 2,
+      paediatricianRounds: 3
+    });
+    expect(result.breakdown.find((item) => item.id === "professional-obRound")?.base).toBe(2000);
+    expect(result.breakdown.find((item) => item.id === "professional-paediatrician")?.base).toBe(6000);
+    expect(result.breakdown.find((item) => item.id === "room")?.detail).toContain("5 日");
+  });
+
+  it("uses a natural-delivery professional profile instead of a caesarean profile", () => {
+    const result = calculateEstimate({ ...baseInput, delivery: "natural" });
+    expect(result.warnings.some((warning) => warning.includes("自然分娩使用獨立接生費Profile"))).toBe(true);
+    expect(result.warnings.some((warning) => warning.includes("剖腹Profile"))).toBe(false);
+  });
+
+  it("explains controlled fallback for an emergency scenario", () => {
+    const result = calculateEstimate({ ...baseInput, delivery: "direct_emergency" });
+    expect(result.selectedPackage?.delivery).toBe("elective");
+    expect(result.packageFallbackReason).toContain("沒有獨立套餐");
+    expect(result.warnings.some((warning) => warning.startsWith("套餐Fallback："))).toBe(true);
+  });
+
+  it("prices an extra BB stay from the selected room-class column", () => {
+    const fee = database.feeItems.find((item) => item.id === "CH-NURSERY-DAILY")!;
+    const original = { standard: fee.standard, semiPrivate: fee.semiPrivate, private: fee.private };
+    Object.assign(fee, { standard: 1000, semiPrivate: 1600, private: 2400 });
+    try {
+      const result = calculateEstimate({
+        ...baseInput,
+        hospitalId: "CH",
+        room: "私家房",
+        extraBabyNights: 2
+      });
+      expect(result.breakdown.find((item) => item.id === "extra-baby-night")?.base).toBe(4800);
+    } finally {
+      Object.assign(fee, original);
+    }
+  });
+
+  it("handles triplets through the published multifetal rule", () => {
+    const result = calculateEstimate({ ...baseInput, babyCount: 3 });
+    expect(result.breakdown.find((item) => item.id === "multifetal")?.base).toBe(18200);
+  });
+
+  it("shows package price and the outside-package bill gap", () => {
+    const result = calculateEstimate(baseInput);
+    expect(result.packagePrice).toBe(26000);
+    expect(result.outsidePackageTotal).toBe(result.base - result.packagePrice);
+    expect(result.estimatedBillGap).toBe(result.outsidePackageTotal);
   });
 });

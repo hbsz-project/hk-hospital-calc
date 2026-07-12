@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hbsz-project.github.io/hk-hospital-calc/database.schema.json",
+  "title": "HK maternity calculator database",
+  "type": "object",
+  "required": ["packages"],
+  "properties": {
+    "release": { "type": "object", "required": ["version", "sheetVerified", "disclaimer"] },
+    "hospitals": { "type": "array", "items": { "$ref": "#/$defs/hospital" } },
+    "packages": { "type": "array", "items": { "$ref": "#/$defs/package" } },
+    "surcharges": { "type": "array" },
+    "feeItems": { "type": "array" },
+    "professionalEstimates": { "type": "array" },
+    "sources": { "type": "array", "items": { "$ref": "#/$defs/source" } },
+    "cases": { "type": "array" }
+  },
+  "$defs": {
+    "date": { "type": "string", "format": "date" },
+    "hospital": {
+      "type": "object",
+      "required": ["id", "name", "lastVerified"],
+      "properties": { "id": { "type": "string" }, "name": { "type": "string" }, "lastVerified": { "$ref": "#/$defs/date" } }
+    },
+    "package": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" }, "hospitalId": { "type": "string" }, "room": { "type": "string" },
+        "delivery": { "enum": ["natural", "elective", "direct_emergency", "after_labor"] },
+        "timing": { "enum": ["standard", "specified", "off_hours"] },
+        "packageMode": { "enum": ["standard", "hospital", "total_care"] },
+        "packageDays": { "type": ["number", "null"] }, "packageNights": { "type": ["number", "null"] },
+        "roomChargeUnits": { "type": ["number", "null"] }, "stayDays": { "type": ["number", "null"] },
+        "price": { "type": "number", "minimum": 0 }, "sourceUrl": { "type": "string", "format": "uri" },
+        "lastVerified": { "$ref": "#/$defs/date" }
+      },
+      "required": ["id", "hospitalId", "room", "delivery", "timing", "packageMode", "price", "sourceUrl", "lastVerified", "packageDays", "packageNights", "roomChargeUnits"]
+    },
+    "source": {
+      "type": "object",
+      "required": ["id", "organization", "name", "url", "checked", "reliability"],
+      "properties": { "checked": { "$ref": "#/$defs/date" }, "url": { "type": "string", "format": "uri" } }
+    }
+  }
+}

@@ -29,7 +29,7 @@ import type {
   ProfessionalQuote,
   TimingScenario
 } from "./types";
-import { trackEvent } from "./analytics";
+import { getAnalyticsConsent, setAnalyticsConsent, trackEvent } from "./analytics";
 
 const money = new Intl.NumberFormat("zh-HK", {
   style: "currency",
@@ -176,7 +176,9 @@ function App() {
     delivery: "elective",
     timing: "standard",
     packageMode: "standard",
-    stayDays: 5,
+    accommodationDays: 5,
+    obstetricianRounds: 5,
+    paediatricianRounds: 5,
     babyCount: 1,
     extraMotherNights: 0,
     extraBabyNights: 0,
@@ -187,6 +189,9 @@ function App() {
     professionalSurchargePercent: 50,
     professionalQuote: {}
   });
+  const [analyticsConsent, setConsentState] = useState<string | null>(() =>
+    getAnalyticsConsent()
+  );
 
   const rooms = useMemo(() => getRooms(input.hospitalId), [input.hospitalId]);
   const result = useMemo(() => calculateEstimate(input), [input]);
@@ -239,6 +244,10 @@ function App() {
     hasPackageMode(input.hospitalId, "total_care");
 
   useEffect(() => {
+    if (analyticsConsent === "granted") setAnalyticsConsent(true);
+  }, [analyticsConsent]);
+
+  useEffect(() => {
     if (!rooms.includes(input.room)) {
       setInput((current) => ({ ...current, room: rooms[0] }));
     }
@@ -246,8 +255,13 @@ function App() {
 
   useEffect(() => {
     const selected = selectPackage(input);
-    if (selected?.stayDays && selected.stayDays !== input.stayDays) {
-      setInput((current) => ({ ...current, stayDays: selected.stayDays ?? current.stayDays }));
+    if (selected?.packageDays && selected.packageDays !== input.accommodationDays) {
+      setInput((current) => ({
+        ...current,
+        accommodationDays: selected.packageDays ?? current.accommodationDays,
+        obstetricianRounds: selected.packageDays ?? current.obstetricianRounds,
+        paediatricianRounds: selected.packageDays ?? current.paediatricianRounds
+      }));
     }
     // Package changes should reset the expected package stay automatically.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -548,14 +562,14 @@ function App() {
             <label>
               <span>
                 <ClipboardList size={17} />
-                住院日數
+                住宿日數
               </span>
               <Stepper
-                value={input.stayDays}
+                value={input.accommodationDays}
                 min={3}
                 max={10}
                 suffix="日"
-                onChange={(value) => update("stayDays", value)}
+                onChange={(value) => update("accommodationDays", value)}
               />
             </label>
             <label>
@@ -569,6 +583,29 @@ function App() {
                 max={3}
                 suffix="名"
                 onChange={(value) => update("babyCount", value)}
+              />
+            </label>
+          </div>
+
+          <div className="dual-steppers rounds-grid">
+            <label>
+              <span><Stethoscope size={17} />產科巡房次數</span>
+              <Stepper
+                value={input.obstetricianRounds}
+                min={0}
+                max={14}
+                suffix="次"
+                onChange={(value) => update("obstetricianRounds", value)}
+              />
+            </label>
+            <label>
+              <span><Baby size={17} />兒科巡房次數（每名BB）</span>
+              <Stepper
+                value={input.paediatricianRounds}
+                min={0}
+                max={21}
+                suffix="次"
+                onChange={(value) => update("paediatricianRounds", value)}
               />
             </label>
           </div>
@@ -715,19 +752,25 @@ function App() {
             <div className="subtotal-strip">
               <div>
                 <Building2 size={16} />
-                <span>院方</span>
+                <span>院方 · {sourceLabels[result.confidenceByGroup.hospital === "high" ? "verified" : "estimate"]}</span>
                 <strong>{money.format(result.hospitalSubtotal.base)}</strong>
               </div>
               <div>
                 <Stethoscope size={16} />
-                <span>媽媽專業費</span>
+                <span>媽媽專業費 · 可信度{result.confidenceByGroup.professional === "high" ? "高" : result.confidenceByGroup.professional === "medium" ? "中" : "低"}</span>
                 <strong>{money.format(result.professionalSubtotal.base)}</strong>
               </div>
               <div>
                 <Baby size={16} />
-                <span>BB</span>
+                <span>BB · 可信度{result.confidenceByGroup.baby === "high" ? "高" : result.confidenceByGroup.baby === "medium" ? "中" : "低"}</span>
                 <strong>{money.format(result.babySubtotal.base)}</strong>
               </div>
+            </div>
+
+            <div className="package-comparison" aria-label="套餐與估算埋單比較">
+              <div><span>套餐價</span><strong>{money.format(result.packagePrice)}</strong></div>
+              <div><span>套餐外費用</span><strong>{money.format(result.outsidePackageTotal)}</strong></div>
+              <div><span>估算埋單差距</span><strong>+{money.format(result.estimatedBillGap)}</strong></div>
             </div>
 
             <section className="breakdown-section">
@@ -813,7 +856,7 @@ function App() {
                       onClick={() => trackEvent("reference_case_clicked")}
                     >
                       <span>
-                        {item.year} · {item.room}
+                        {item.hospital} · {item.delivery} · {item.room} · {item.year} · 證據{item.evidence}
                       </span>
                       <strong>{money.format(item.total)}</strong>
                       <ExternalLink size={14} />
@@ -832,17 +875,18 @@ function App() {
                 </h3>
               </div>
               <div className="source-links">
-                {result.sourceUrls.map((url, index) => (
+                {result.sources.map((source) => (
                   <a
-                    key={url}
-                    href={url}
+                    key={source.id}
+                    href={source.url}
                     target="_blank"
                     rel="noreferrer"
                     onClick={() =>
                       trackEvent("data_source_clicked", { hospital_id: input.hospitalId })
                     }
                   >
-                    來源 {index + 1}
+                    <span>{source.organization}｜{source.name}</span>
+                    <small>{source.reliability} · 核實 {source.checked}</small>
                     <ExternalLink size={13} />
                   </a>
                 ))}
@@ -876,10 +920,26 @@ function App() {
         </aside>
       </main>
 
+      <div className="mobile-total-bar">
+        <span>估算總額<small>單一中央估算</small></span>
+        <strong>{money.format(result.base)}</strong>
+      </div>
+
       <footer>
         <span>資料版本 {database.release.version}</span>
-        <span>不儲存你輸入的醫生報價</span>
+        <span><a href="#privacy">私隱說明</a> · 不儲存你輸入的醫生報價</span>
       </footer>
+      <section className="privacy-panel" id="privacy">
+        <h2>私隱與數據</h2>
+        <p>估算輸入只留在你的瀏覽器，不會傳送醫生報價或健康資料。只有你同意後才載入匿名流量分析；你可隨時清除網站儲存重設選擇。</p>
+      </section>
+      {analyticsConsent === null && (
+        <aside className="consent-banner" aria-label="Analytics consent">
+          <div><strong>匿名流量分析</strong><span>只用來改善計算器，不收集估算內容或醫生報價。</span></div>
+          <button type="button" onClick={() => { setAnalyticsConsent(false); setConsentState("denied"); }}>拒絕</button>
+          <button type="button" className="primary" onClick={() => { setAnalyticsConsent(true); setConsentState("granted"); }}>同意</button>
+        </aside>
+      )}
     </div>
   );
 }

@@ -32,31 +32,63 @@ function classifyRoom(room: string): "standard" | "semi" | "private" {
   return "standard";
 }
 
-function packageDistance(item: MaternityPackage, input: CalculatorInput) {
-  let score = 0;
-  if (item.delivery !== input.delivery) score += 100;
-  if (item.timing !== input.timing) score += item.timing === "standard" ? 8 : 30;
-  if (item.packageMode !== input.packageMode) score += 60;
-  if (item.stayDays !== null) score += Math.abs(item.stayDays - input.stayDays);
-  if (input.babyCount === 2) score += item.specialTwin ? -12 : 0;
-  if (input.babyCount === 1 && item.specialTwin) score += 80;
-  return score;
-}
-
-export function selectPackage(input: CalculatorInput): MaternityPackage | null {
+export function selectPackageMatch(input: CalculatorInput): {
+  package: MaternityPackage | null;
+  fallbackReason: string | null;
+} {
   const sameRoom = database.packages.filter(
     (item) => item.hospitalId === input.hospitalId && item.room === input.room
   );
-  if (!sameRoom.length) return null;
+  if (!sameRoom.length) return { package: null, fallbackReason: "此醫院及房型沒有套餐資料。" };
 
-  const exactDelivery = sameRoom.filter((item) => item.delivery === input.delivery);
-  const pool = exactDelivery.length
-    ? exactDelivery
-    : input.delivery === "natural"
-      ? []
-      : sameRoom.filter((item) => item.delivery === "elective");
+  const wantsTwinPackage = input.babyCount === 2;
+  const exact = sameRoom.filter(
+    (item) =>
+      item.delivery === input.delivery &&
+      item.timing === input.timing &&
+      item.packageMode === input.packageMode &&
+      item.specialTwin === wantsTwinPackage
+  );
+  if (exact.length) {
+    return {
+      package: [...exact].sort(
+        (a, b) =>
+          Math.abs((a.packageDays ?? input.accommodationDays) - input.accommodationDays) -
+          Math.abs((b.packageDays ?? input.accommodationDays) - input.accommodationDays)
+      )[0],
+      fallbackReason: null
+    };
+  }
 
-  return [...pool].sort((a, b) => packageDistance(a, input) - packageDistance(b, input))[0] ?? null;
+  // Natural delivery must never fall back to a caesarean package.
+  const deliveryFallback = input.delivery === "natural" ? "natural" : "elective";
+  const relaxed = sameRoom.filter(
+    (item) =>
+      item.delivery === deliveryFallback &&
+      item.packageMode === input.packageMode &&
+      item.specialTwin === wantsTwinPackage
+  );
+  const singleFallback = !relaxed.length && wantsTwinPackage
+    ? sameRoom.filter(
+        (item) =>
+          item.delivery === deliveryFallback &&
+          item.packageMode === input.packageMode &&
+          !item.specialTwin
+      )
+    : relaxed;
+  const selected = singleFallback.find((item) => item.timing === "standard") ?? singleFallback[0] ?? null;
+  if (!selected) {
+    return { package: null, fallbackReason: "找不到相同分娩方式、套餐類型及胎數的可用套餐。" };
+  }
+  const reasons = [];
+  if (selected.delivery !== input.delivery) reasons.push("所選緊急情境沒有獨立套餐，暫用預約剖腹套餐");
+  if (selected.timing !== input.timing) reasons.push("所選時段沒有獨立套餐，暫用正常時段套餐並另計附加費");
+  if (wantsTwinPackage && !selected.specialTwin) reasons.push("沒有雙胎專屬套餐，暫用單胎套餐及多胎附加規則");
+  return { package: selected, fallbackReason: reasons.join("；") + "。" };
+}
+
+export function selectPackage(input: CalculatorInput): MaternityPackage | null {
+  return selectPackageMatch(input).package;
 }
 
 function roomIndex(hospitalId: string, room: string) {
@@ -125,22 +157,23 @@ function emergencySurcharge(input: CalculatorInput, selected: MaternityPackage) 
 function findProfessionalProfile(input: CalculatorInput): ProfessionalEstimate | undefined {
   const roomClass = classifyRoom(input.room);
   const hospitalRows = database.professionalEstimates.filter(
-    (row) => row.hospitalId === input.hospitalId
+    (row) => row.hospitalId === input.hospitalId && row.delivery === input.delivery
   );
 
   if (hospitalRows.length) {
     const matching = hospitalRows.filter((row) => classifyRoom(row.room) === roomClass);
     return [...matching].sort(
-      (a, b) => Math.abs(a.baseDays - input.stayDays) - Math.abs(b.baseDays - input.stayDays)
+      (a, b) => Math.abs(a.baseDays - input.accommodationDays) - Math.abs(b.baseDays - input.accommodationDays)
     )[0];
   }
 
+  const genericPrefix = input.delivery === "natural" ? "GEN-NATURAL" : "GEN-CSEC";
   const genericId =
     roomClass === "private"
-      ? "GEN-CSEC-PRIVATE"
+      ? `${genericPrefix}-PRIVATE`
       : roomClass === "semi"
-        ? "GEN-CSEC-SEMI"
-        : "GEN-CSEC-STANDARD";
+        ? `${genericPrefix}-SEMI`
+        : `${genericPrefix}-STANDARD`;
   return database.professionalEstimates.find((row) => row.id.startsWith(genericId));
 }
 
@@ -160,11 +193,11 @@ function componentBand(
     return { low: quote.anaesthetist, base: quote.anaesthetist, high: quote.anaesthetist };
   }
   if (component === "obRound" && quote.obstetricianRoundPerDay !== undefined) {
-    const value = quote.obstetricianRoundPerDay * input.stayDays;
+    const value = quote.obstetricianRoundPerDay * input.obstetricianRounds;
     return { low: value, base: value, high: value };
   }
   if (component === "paediatrician" && quote.paediatricianRoundPerBabyDay !== undefined) {
-    const value = quote.paediatricianRoundPerBabyDay * input.stayDays * input.babyCount;
+    const value = quote.paediatricianRoundPerBabyDay * input.paediatricianRounds * input.babyCount;
     return { low: value, base: value, high: value };
   }
 
@@ -175,9 +208,9 @@ function componentBand(
       if (component === "anaesthetist") {
         value = estimate.obstetrician[key] * estimate.anaesthetistRatio[key];
       }
-      if (component === "obRound") value = estimate.obRound[key] * input.stayDays;
+      if (component === "obRound") value = estimate.obRound[key] * input.obstetricianRounds;
       if (component === "paediatrician") {
-        value = estimate.paediatricianRound[key] * input.stayDays * input.babyCount;
+        value = estimate.paediatricianRound[key] * input.paediatricianRounds * input.babyCount;
       }
       return [key, value * multiplier[key]];
     })
@@ -215,7 +248,7 @@ function getProfessional(input: CalculatorInput, selected: MaternityPackage) {
       input.delivery === "natural" ? "產科醫生接生費" : "產科醫生手術費",
       input.delivery === "natural" ? "一次性接生專業費" : "一次性剖腹手術專業費"
     ],
-    ["obRound", "產科醫生巡房", `${input.stayDays} 日`]
+    ["obRound", "產科醫生巡房", `${input.obstetricianRounds} 次`]
   ];
 
   if (input.delivery !== "natural" || input.epidural) {
@@ -232,7 +265,7 @@ function getProfessional(input: CalculatorInput, selected: MaternityPackage) {
     components.push([
       "paediatrician",
       "BB兒科醫生巡房費",
-      `${input.babyCount} 名BB × ${input.stayDays} 日`
+      `${input.babyCount} 名BB × ${input.paediatricianRounds} 次`
     ]);
   }
 
@@ -362,7 +395,12 @@ function getBabyNightRate(input: CalculatorInput) {
       !/Special|特殊/.test(fee.name)
   );
   if (!item) return null;
-  const value = item.standard ?? item.semiPrivate ?? item.private;
+  const roomClass = classifyRoom(input.room);
+  const value = roomClass === "private"
+    ? item.private ?? item.semiPrivate ?? item.standard
+    : roomClass === "semi"
+      ? item.semiPrivate ?? item.standard ?? item.private
+      : item.standard ?? item.semiPrivate ?? item.private;
   return value ? { value, sourceUrl: item.sourceUrl } : null;
 }
 
@@ -442,7 +480,8 @@ function minConfidence(...values: Confidence[]) {
 }
 
 export function calculateEstimate(input: CalculatorInput): CalculatorResult {
-  const selected = selectPackage(input);
+  const match = selectPackageMatch(input);
+  const selected = match.package;
   const warnings: string[] = [];
   const breakdown: BreakdownItem[] = [];
   const sourceUrls = new Set<string>();
@@ -462,12 +501,18 @@ export function calculateEstimate(input: CalculatorInput): CalculatorResult {
       confidenceLabel: "資料不足",
       largestUncertainty: "院方套餐",
       selectedPackage: null,
+      packageFallbackReason: match.fallbackReason,
+      packagePrice: 0,
+      outsidePackageTotal: 0,
+      estimatedBillGap: 0,
+      confidenceByGroup: { hospital: "low", professional: "low", baby: "low" },
       cases: [],
-      sourceUrls: []
+      sources: []
     };
   }
 
   sourceUrls.add(selected.sourceUrl);
+  if (match.fallbackReason) warnings.push(`套餐Fallback：${match.fallbackReason}`);
   breakdown.push({
     id: "package",
     label: "醫院分娩套餐",
@@ -489,7 +534,7 @@ export function calculateEstimate(input: CalculatorInput): CalculatorResult {
   }
 
   if (selected.roomIncluded === false) {
-    const days = selected.stayDays ?? input.stayDays;
+    const days = selected.roomChargeUnits ?? selected.packageDays ?? input.accommodationDays;
     const roomBand = {
       low: (selected.roomRateLow ?? 0) * days,
       base: (selected.roomRateLow ?? selected.roomRateHigh ?? 0) * days,
@@ -704,7 +749,7 @@ export function calculateEstimate(input: CalculatorInput): CalculatorResult {
     );
   }
   if (input.delivery === "natural") {
-    warnings.push("自然分娩專業費暫按現有房型Profile估算；沒有選無痛分娩時不計麻醉師費。");
+    warnings.push("自然分娩使用獨立接生費Profile；沒有選無痛分娩時不計麻醉師費。");
   }
 
   const total = addBand(addBand(hospitalSubtotal, professionalSubtotal), babySubtotal);
@@ -726,7 +771,47 @@ export function calculateEstimate(input: CalculatorInput): CalculatorResult {
           ? "未公開的院方附加費"
           : "突發檢查、藥物及BB護理";
 
+  const babyConfidence: Confidence = breakdown
+    .filter((item) => item.kind === "baby")
+    .some((item) => item.source === "estimate" || item.source === "secondary")
+      ? "low"
+      : "high";
+  const cases = database.cases
+    .map((item) => {
+      const year = Number(item.year.match(/20\d{2}/)?.[0] ?? 0);
+      const score =
+        (item.hospitalId === input.hospitalId ? 1000 : 0) +
+        (item.delivery.includes(input.delivery === "natural" ? "順產" : "剖腹") ? 300 : 0) +
+        (item.room.includes(input.room.replace(/[（(].*$/, "")) ? 150 : 0) +
+        ({ A: 30, B: 20, C: 10 }[item.evidence] ?? 0) +
+        year / 100;
+      return { item, score };
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+    .map(({ item }) => item);
+  const sources = Array.from(sourceUrls).map((url) =>
+    database.sources.find((source) => source.url === url) ?? {
+      id: `SOURCE-${url}`,
+      organization: getHospital(input.hospitalId)?.name ?? "資料提供者",
+      name: "收費資料頁",
+      url,
+      effective: "未註明",
+      checked: selected.lastVerified,
+      reliability: selected.sourceType === "official" ? "官方" : "二級來源",
+      limitation: "請以連結內最新版本為準。"
+    }
+  );
+  const staleSources = sources.filter(
+    (source) => Date.now() - new Date(source.checked).getTime() > 180 * 24 * 60 * 60 * 1000
+  );
+  if (staleSources.length) warnings.push(`${staleSources.length} 項資料超過180日未核實，請先向院方確認。`);
+  const packagePrice = selected.price;
+  const estimatedBillGap = Math.max(0, roundMoney(total.base) - packagePrice);
+
   return {
+    // Product decision: the public low/base/high contract intentionally exposes one central estimate.
+    // Internal component bands remain available for audit, but a broad price range is not shown to users.
     low: roundMoney(total.base),
     base: roundMoney(total.base),
     high: roundMoney(total.base),
@@ -745,7 +830,16 @@ export function calculateEstimate(input: CalculatorInput): CalculatorResult {
     confidenceLabel: { high: "較高", medium: "中等", low: "較低" }[confidence],
     largestUncertainty,
     selectedPackage: selected,
-    cases: database.cases.filter((item) => item.hospitalId === input.hospitalId).slice(0, 3),
-    sourceUrls: Array.from(sourceUrls)
+    packageFallbackReason: match.fallbackReason,
+    packagePrice,
+    outsidePackageTotal: estimatedBillGap,
+    estimatedBillGap,
+    confidenceByGroup: {
+      hospital: hospitalConfidence,
+      professional: professional.confidence,
+      baby: babyConfidence
+    },
+    cases,
+    sources
   };
 }
