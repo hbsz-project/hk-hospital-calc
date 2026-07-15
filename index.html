@@ -5,10 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="整合香港私家醫院套餐、附加費、媽媽專業費及BB費用的分娩費用估算工具。" />
     <meta name="theme-color" content="#f4f7f5" />
+    <link rel="canonical" href="https://hbsz-project.github.io/hk-hospital-calc/" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_HK" />
+    <meta property="og:site_name" content="香港私家醫院分娩費用估算器" />
+    <meta property="og:title" content="香港私家醫院分娩費用估算器" />
+    <meta property="og:description" content="比較私家醫院分娩套餐、專業費及BB費用的單一中央估算。" />
+    <meta property="og:url" content="https://hbsz-project.github.io/hk-hospital-calc/" />
+    <meta property="og:image" content="https://hbsz-project.github.io/hk-hospital-calc/og-card.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
     <title>香港私家醫院分娩費用估算器</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "估算是否等同醫院或醫生報價？",
+            "acceptedAnswer": { "@type": "Answer", "text": "不是。估算只供預算參考，最終收費以院方及醫療團隊結算為準。" }
+          },
+          {
+            "@type": "Question",
+            "name": "為何只顯示一個估算總額？",
+            "acceptedAnswer": { "@type": "Answer", "text": "系統刻意顯示一個中央估算，避免過闊的價格範圍難以用於預算。" }
+          },
+          {
+            "@type": "Question",
+            "name": "分享條件URL會包括醫生報價嗎？",
+            "acceptedAnswer": { "@type": "Answer", "text": "不會。URL只保存醫院、房型、分娩方式、住宿和一般選項，不保存任何醫生報價。" }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><main><h1>香港私家醫院分娩費用估算器</h1><p>比較院方套餐、專業費估算及BB費用。資料更新日期：2026-07-10。</p></main></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

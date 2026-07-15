@@ -8,15 +8,20 @@ import {
   CheckCircle2,
   ChevronDown,
   ClipboardList,
+  Copy,
   ExternalLink,
+  FileDown,
   FileCheck2,
+  GitCompareArrows,
   HeartPulse,
   Info,
   Minus,
   Plus,
+  Printer,
   ReceiptText,
   ShieldCheck,
-  Stethoscope
+  Stethoscope,
+  Link2
 } from "lucide-react";
 import { calculateEstimate, selectPackage } from "./calculator";
 import { database, getRooms, hasPackageMode, hospitals } from "./data";
@@ -30,6 +35,13 @@ import type {
   TimingScenario
 } from "./types";
 import { getAnalyticsConsent, setAnalyticsConsent, trackEvent } from "./analytics";
+import {
+  buildShareUrl,
+  compareHospitals,
+  compareRoomClasses,
+  estimateSummary,
+  inputFromUrl
+} from "./features";
 
 const money = new Intl.NumberFormat("zh-HK", {
   style: "currency",
@@ -109,12 +121,14 @@ function CurrencyInput({
   value,
   onChange,
   suffix,
+  systemEstimate,
   placeholder = "使用系統估算"
 }: {
   label: string;
   value?: number;
   onChange: (value: number | undefined) => void;
   suffix?: string;
+  systemEstimate?: number;
   placeholder?: string;
 }) {
   return (
@@ -125,7 +139,7 @@ function CurrencyInput({
         <input
           inputMode="numeric"
           min="0"
-          placeholder={placeholder}
+          placeholder={systemEstimate === undefined ? placeholder : `${Math.round(systemEstimate).toLocaleString("en-US")}（系統估算）`}
           value={value ?? ""}
           onChange={(event) =>
             onChange(event.target.value === "" ? undefined : Number(event.target.value))
@@ -133,6 +147,9 @@ function CurrencyInput({
         />
         {suffix && <em>{suffix}</em>}
       </div>
+      {systemEstimate !== undefined && value === undefined && (
+        <small>目前系統估算：{money.format(systemEstimate)}{suffix ? ` ${suffix}` : ""}</small>
+      )}
     </label>
   );
 }
@@ -170,31 +187,21 @@ function PercentageInput({
 
 function App() {
   const hasInteracted = useRef(false);
-  const [input, setInput] = useState<CalculatorInput>({
-    hospitalId: "UH",
-    room: getRooms("UH")[0],
-    delivery: "elective",
-    timing: "standard",
-    packageMode: "standard",
-    accommodationDays: 5,
-    obstetricianRounds: 5,
-    paediatricianRounds: 5,
-    babyCount: 1,
-    extraMotherNights: 0,
-    extraBabyNights: 0,
-    epidural: false,
-    instrumentalDelivery: false,
-    babyScreeningPlanId: "none",
-    babyScreeningFee: 0,
-    professionalSurchargePercent: 50,
-    professionalQuote: {}
-  });
+  const [input, setInput] = useState<CalculatorInput>(() => inputFromUrl(window.location));
+  const packageSelectionRef = useRef("");
+  const [actionNotice, setActionNotice] = useState("");
   const [analyticsConsent, setConsentState] = useState<string | null>(() =>
     getAnalyticsConsent()
   );
 
   const rooms = useMemo(() => getRooms(input.hospitalId), [input.hospitalId]);
   const result = useMemo(() => calculateEstimate(input), [input]);
+  const systemResult = useMemo(
+    () => calculateEstimate({ ...input, professionalQuote: {} }),
+    [input]
+  );
+  const hospitalComparisons = useMemo(() => compareHospitals(input), [input]);
+  const roomComparisons = useMemo(() => compareRoomClasses(input), [input]);
   const hospital = hospitals.find((item) => item.id === input.hospitalId);
   const selectedBabyScreening = getBabyScreeningReference(input.babyScreeningPlanId);
   const breakdownGroups = useMemo(() => {
@@ -242,6 +249,21 @@ function App() {
   const supportsPackageMode =
     hasPackageMode(input.hospitalId, "hospital") &&
     hasPackageMode(input.hospitalId, "total_care");
+  const systemProfessional = useMemo(() => {
+    const item = (id: string, label?: string) => systemResult.breakdown.find(
+      (row) => row.id === id || row.label === label
+    )?.base;
+    return {
+      obstetrician: item("professional-obstetrician"),
+      anaesthetist: item("professional-anaesthetist"),
+      obstetricianRoundPerDay: input.obstetricianRounds
+        ? (item("professional-obRound", "產科醫生巡房") ?? 0) / input.obstetricianRounds
+        : 0,
+      paediatricianRoundPerBabyDay: input.paediatricianRounds && input.babyCount
+        ? (item("professional-paediatrician", "BB兒科醫生巡房費") ?? 0) / input.paediatricianRounds / input.babyCount
+        : 0
+    };
+  }, [input.babyCount, input.obstetricianRounds, input.paediatricianRounds, systemResult]);
 
   useEffect(() => {
     if (analyticsConsent === "granted") setAnalyticsConsent(true);
@@ -254,6 +276,20 @@ function App() {
   }, [rooms, input.room]);
 
   useEffect(() => {
+    const selectionKey = [
+      input.hospitalId,
+      input.room,
+      input.delivery,
+      input.timing,
+      input.packageMode,
+      input.babyCount
+    ].join("|");
+    if (!packageSelectionRef.current) {
+      packageSelectionRef.current = selectionKey;
+      return;
+    }
+    if (packageSelectionRef.current === selectionKey) return;
+    packageSelectionRef.current = selectionKey;
     const selected = selectPackage(input);
     if (selected?.packageDays && selected.packageDays !== input.accommodationDays) {
       setInput((current) => ({
@@ -337,6 +373,27 @@ function App() {
       babyScreeningPlanId: reference.id,
       babyScreeningFee: reference.feePerBaby ?? 0
     }));
+  };
+
+  const showNotice = (message: string) => {
+    setActionNotice(message);
+    window.setTimeout(() => setActionNotice(""), 2400);
+  };
+
+  const copyText = async (text: string, success: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      showNotice(success);
+    } catch {
+      showNotice("未能自動複製，請檢查瀏覽器權限。");
+    }
+  };
+
+  const printEstimate = (mode: "print" | "pdf") => {
+    document.body.dataset.printMode = mode;
+    trackEvent(mode === "pdf" ? "pdf_requested" : "print_requested");
+    window.print();
+    delete document.body.dataset.printMode;
   };
 
   return (
@@ -701,25 +758,29 @@ function App() {
                 <CurrencyInput
                   label={input.delivery === "natural" ? "產科醫生接生費" : "產科醫生手術費"}
                   value={input.professionalQuote.obstetrician}
+                  systemEstimate={systemProfessional.obstetrician}
                   onChange={(value) => updateQuote("obstetrician", value)}
                 />
                 {(input.delivery !== "natural" || input.epidural) && (
                   <CurrencyInput
                     label="麻醉師費"
                     value={input.professionalQuote.anaesthetist}
+                    systemEstimate={systemProfessional.anaesthetist}
                     onChange={(value) => updateQuote("anaesthetist", value)}
                   />
                 )}
                 <CurrencyInput
                   label="產科醫生巡房"
-                  suffix="/ 日"
+                  suffix="/ 次"
                   value={input.professionalQuote.obstetricianRoundPerDay}
+                  systemEstimate={systemProfessional.obstetricianRoundPerDay}
                   onChange={(value) => updateQuote("obstetricianRoundPerDay", value)}
                 />
                 <CurrencyInput
                   label="BB兒科醫生巡房"
-                  suffix="/ BB / 日"
+                  suffix="/ BB / 次"
                   value={input.professionalQuote.paediatricianRoundPerBabyDay}
+                  systemEstimate={systemProfessional.paediatricianRoundPerBabyDay}
                   onChange={(value) => updateQuote("paediatricianRoundPerBabyDay", value)}
                 />
               </div>
@@ -749,6 +810,21 @@ function App() {
               <small>按已知院方項目、專業費估算及你的輸入計算</small>
             </div>
 
+            <nav className="estimate-actions" aria-label="分享及列印估算">
+              <button type="button" onClick={() => copyText(estimateSummary(input, result, hospital?.name ?? "醫院"), "估算摘要已複製。") }>
+                <Copy size={15} />複製摘要
+              </button>
+              <button type="button" onClick={() => printEstimate("print")}>
+                <Printer size={15} />列印頁
+              </button>
+              <button type="button" onClick={() => printEstimate("pdf")}>
+                <FileDown size={15} />儲存PDF
+              </button>
+              <button type="button" onClick={() => copyText(buildShareUrl(input, window.location.origin), "條件URL已複製；不包括醫生報價。") }>
+                <Link2 size={15} />分享條件URL
+              </button>
+            </nav>
+
             <div className="subtotal-strip">
               <div>
                 <Building2 size={16} />
@@ -772,6 +848,39 @@ function App() {
               <div><span>套餐外費用</span><strong>{money.format(result.outsidePackageTotal)}</strong></div>
               <div><span>估算埋單差距</span><strong>+{money.format(result.estimatedBillGap)}</strong></div>
             </div>
+
+            <details className="comparison-section">
+              <summary><span><GitCompareArrows size={17} />同條件比較醫院</span><ChevronDown size={17} /></summary>
+              <p>以同一分娩方式、相近房型及住宿日數比較；專業費採用各院系統估算，不套用你的醫生報價。</p>
+              <div className="hospital-comparison-table">
+                <div className="comparison-head"><span>醫院／房型</span><span>院方費</span><span>專業費</span><span>BB費用</span><span>估算總額</span><span>可信度</span></div>
+                {hospitalComparisons.map((row) => (
+                  <div className={row.hospitalId === input.hospitalId ? "comparison-row current" : "comparison-row"} key={row.hospitalId}>
+                    <span><strong>{row.hospitalName}</strong><small>{row.room}</small></span>
+                    <span data-label="院方費">{money.format(row.result.hospitalSubtotal.base)}</span>
+                    <span data-label="專業費">{money.format(row.result.professionalSubtotal.base)}</span>
+                    <span data-label="BB費用">{money.format(row.result.babySubtotal.base)}</span>
+                    <span data-label="估算總額"><strong>{money.format(row.result.base)}</strong></span>
+                    <span data-label="可信度"><i className={`confidence-dot ${row.result.confidence}`} />{row.result.confidenceLabel}</span>
+                  </div>
+                ))}
+              </div>
+            </details>
+
+            <details className="comparison-section room-comparison-section">
+              <summary><span><BedDouble size={17} />比較標準房與私家房</span><ChevronDown size={17} /></summary>
+              <p>同一醫院及一般條件，只切換至最相近的標準房或私家房；每個選項只顯示中央估算。</p>
+              <div className="room-comparison-grid">
+                {roomComparisons.map((row) => (
+                  <article key={row.roomClass}>
+                    <span>{row.roomClass === "standard" ? "標準房" : "私家房"}</span>
+                    <h4>{row.room}</h4>
+                    <strong>{money.format(row.result.base)}</strong>
+                    <small>院方 {money.format(row.result.hospitalSubtotal.base)} · 專業費 {money.format(row.result.professionalSubtotal.base)} · BB {money.format(row.result.babySubtotal.base)}</small>
+                  </article>
+                ))}
+              </div>
+            </details>
 
             <section className="breakdown-section">
               <div className="result-section-title">
@@ -893,6 +1002,22 @@ function App() {
               </div>
             </section>
 
+            <section className="faq-section" aria-labelledby="faq-title">
+              <div className="result-section-title"><h3 id="faq-title">常見問題</h3></div>
+              <details>
+                <summary>估算是否等同醫院或醫生報價？</summary>
+                <p>不是。估算只供預算參考，最終收費以院方及醫療團隊結算為準。</p>
+              </details>
+              <details>
+                <summary>為何只顯示一個估算總額？</summary>
+                <p>系統刻意顯示一個中央估算，避免過闊的價格範圍難以用於預算。</p>
+              </details>
+              <details>
+                <summary>分享條件URL會包括醫生報價嗎？</summary>
+                <p>不會。URL只保存醫院、房型、分娩方式、住宿和一般選項，不保存任何醫生報價。</p>
+              </details>
+            </section>
+
             <div className="disclaimer">
               <Info size={16} />
               <p>{database.release.disclaimer} 最終收費以院方及醫療團隊結算為準。</p>
@@ -933,6 +1058,17 @@ function App() {
         <h2>私隱與數據</h2>
         <p>估算輸入只留在你的瀏覽器，不會傳送醫生報價或健康資料。只有你同意後才載入匿名流量分析；你可隨時清除網站儲存重設選擇。</p>
       </section>
+      <nav className="hospital-pages" aria-label="醫院分娩費用頁">
+        <strong>各醫院分娩費用頁</strong>
+        <div>
+          {hospitals.map((item) => (
+            <a key={item.id} href={`/hk-hospital-calc/hospitals/${item.id.toLowerCase()}/`}>
+              {item.name}
+            </a>
+          ))}
+        </div>
+        <small>所有頁面資料更新日期：{database.release.sheetVerified}</small>
+      </nav>
       {analyticsConsent === null && (
         <aside className="consent-banner" aria-label="Analytics consent">
           <div><strong>匿名流量分析</strong><span>只用來改善計算器，不收集估算內容或醫生報價。</span></div>
@@ -940,6 +1076,7 @@ function App() {
           <button type="button" className="primary" onClick={() => { setAnalyticsConsent(true); setConsentState("granted"); }}>同意</button>
         </aside>
       )}
+      {actionNotice && <div className="action-notice" role="status">{actionNotice}</div>}
     </div>
   );
 }

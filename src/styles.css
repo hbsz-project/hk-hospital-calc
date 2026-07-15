@@ -730,6 +730,17 @@ a {
   font-weight: 700;
 }
 
+.currency-field > small {
+  color: var(--teal-dark);
+  font-size: 8px;
+  line-height: 1.45;
+}
+
+.currency-field input::placeholder {
+  color: #64716d;
+  opacity: 1;
+}
+
 .estimate-heading {
   display: flex;
   align-items: flex-start;
@@ -825,6 +836,105 @@ a {
 .likely-total small {
   color: #c5d2ce;
   font-size: 10px;
+}
+
+.estimate-actions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.estimate-actions button {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 8px;
+  border: 1px solid var(--line);
+  background: white;
+  color: var(--teal-dark);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.estimate-actions button:hover {
+  border-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.comparison-section {
+  margin-top: 12px;
+  border: 1px solid var(--line);
+  background: white;
+}
+
+.comparison-section summary {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  list-style: none;
+  color: var(--teal-dark);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.comparison-section summary::-webkit-details-marker { display: none; }
+.comparison-section summary span { display: inline-flex; align-items: center; gap: 7px; }
+.comparison-section[open] summary > svg { transform: rotate(180deg); }
+.comparison-section > p { margin: 0; padding: 0 12px 12px; color: var(--muted); font-size: 8px; line-height: 1.55; }
+
+.hospital-comparison-table { border-top: 1px solid var(--line); }
+.comparison-head,
+.comparison-row {
+  display: grid;
+  grid-template-columns: minmax(125px, 1.3fr) repeat(5, minmax(78px, 1fr));
+  align-items: center;
+  gap: 7px;
+  padding: 9px 11px;
+  border-bottom: 1px solid var(--line);
+}
+.comparison-head { background: var(--wash); color: var(--muted); font-size: 7px; font-weight: 700; }
+.comparison-row { font-size: 8px; }
+.comparison-row:last-child { border-bottom: 0; }
+.comparison-row.current { background: rgba(13, 107, 91, .07); box-shadow: inset 3px 0 0 var(--teal); }
+.comparison-row > span:first-child { display: grid; gap: 2px; }
+.comparison-row small { color: var(--muted); font-size: 7px; }
+.comparison-row > span:not(:first-child) { text-align: right; }
+.comparison-row .confidence-dot { display: inline-block; width: 6px; height: 6px; margin-right: 4px; border-radius: 50%; background: var(--amber); }
+.comparison-row .confidence-dot.high { background: var(--teal); }
+.comparison-row .confidence-dot.low { background: var(--coral); }
+
+.room-comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  border-top: 1px solid var(--line);
+  background: var(--line);
+}
+.room-comparison-grid article { display: grid; gap: 5px; padding: 13px; background: white; }
+.room-comparison-grid article > span { color: var(--teal); font-size: 8px; font-weight: 700; }
+.room-comparison-grid h4 { margin: 0; font-size: 11px; }
+.room-comparison-grid article > strong { font-family: "Noto Serif TC", serif; font-size: 18px; }
+.room-comparison-grid small { color: var(--muted); font-size: 7px; line-height: 1.55; }
+
+.action-notice {
+  position: fixed;
+  z-index: 50;
+  right: 20px;
+  bottom: 20px;
+  max-width: min(360px, calc(100vw - 40px));
+  padding: 11px 14px;
+  border: 1px solid var(--teal-dark);
+  background: var(--teal-dark);
+  color: white;
+  box-shadow: var(--shadow);
+  font-size: 10px;
+  font-weight: 700;
 }
 
 .subtotal-strip {
@@ -1148,6 +1258,12 @@ a {
 .source-links a span { font-size: 9px; }
 .source-links a small { color: var(--muted); font-size: 8px; font-weight: 500; }
 
+.faq-section { margin-top: 28px; }
+.faq-section details { border-top: 1px solid var(--line); }
+.faq-section details:last-child { border-bottom: 1px solid var(--line); }
+.faq-section summary { padding: 11px 0; color: var(--teal-dark); font-size: 10px; font-weight: 700; }
+.faq-section p { margin: -2px 0 12px; color: var(--muted); font-size: 9px; line-height: 1.6; }
+
 .mobile-total-bar { display: none; }
 
 .privacy-panel {
@@ -1158,6 +1274,18 @@ a {
 .privacy-panel h2 { margin: 0 0 6px; color: var(--ink); font-size: 14px; }
 .privacy-panel p { max-width: 760px; margin: 0; font-size: 10px; line-height: 1.7; }
 footer a { color: inherit; }
+
+.hospital-pages {
+  display: grid;
+  gap: 10px;
+  padding: 20px clamp(18px, 4vw, 56px);
+  border-top: 1px solid var(--line);
+  background: #eef3f0;
+}
+.hospital-pages > strong { color: var(--ink); font-size: 11px; }
+.hospital-pages > div { display: flex; flex-wrap: wrap; gap: 7px 14px; }
+.hospital-pages a { color: var(--teal-dark); font-size: 9px; font-weight: 700; text-underline-offset: 3px; }
+.hospital-pages small { color: var(--muted); font-size: 8px; }
 
 .consent-banner {
   position: fixed;
@@ -1331,6 +1459,18 @@ footer {
     grid-template-columns: 1fr;
   }
 
+  .estimate-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .comparison-head { display: none; }
+  .comparison-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 12px;
+    padding: 12px;
+  }
+  .comparison-row > span:first-child { grid-column: 1 / -1; padding-bottom: 5px; border-bottom: 1px solid var(--line); }
+  .comparison-row > span:not(:first-child) { display: flex; justify-content: space-between; text-align: left; }
+  .comparison-row > span:not(:first-child)::before { content: attr(data-label); color: var(--muted); font-size: 7px; }
+  .room-comparison-grid { grid-template-columns: 1fr; }
+
   .package-comparison { grid-template-columns: 1fr; }
   .package-comparison > div { border-right: 0; border-bottom: 1px solid var(--line); }
   .package-comparison > div:last-child { border-bottom: 0; }
@@ -1353,7 +1493,7 @@ footer {
   .mobile-total-bar span { display: grid; font-size: 11px; }
   .mobile-total-bar small { color: #afc0bb; font-size: 8px; }
   .mobile-total-bar strong { font-family: "Noto Serif TC", serif; font-size: 20px; }
-  .privacy-panel { padding-bottom: 84px; }
+  .hospital-pages { padding-bottom: 84px; }
   .consent-banner { right: 10px; bottom: 70px; left: 10px; grid-template-columns: 1fr 1fr; }
   .consent-banner div { grid-column: 1 / -1; }
 
@@ -1397,13 +1537,22 @@ footer {
 }
 
 @media print {
+  @page { size: A4; margin: 14mm; }
+
   body {
     background: white;
   }
 
   .form-pane,
   .topbar,
-  footer {
+  footer,
+  .estimate-actions,
+  .mobile-total-bar,
+  .consent-banner,
+  .privacy-panel,
+  .hospital-pages,
+  .feedback-section,
+  .action-notice {
     display: none;
   }
 
@@ -1419,4 +1568,7 @@ footer {
   .result-sticky {
     padding: 0;
   }
+
+  .likely-total { box-shadow: none; print-color-adjust: exact; }
+  .breakdown-row { break-inside: avoid; }
 }
